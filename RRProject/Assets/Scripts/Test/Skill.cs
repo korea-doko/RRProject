@@ -20,7 +20,7 @@ public class Skill
         m_comboCount = 0;
     }
 
-    public void CheckCombo(KeyCode _code)
+    public bool CheckCombo(KeyCode _code)
     {
         KeyCode code = m_comboList[m_comboCount];
         
@@ -32,12 +32,15 @@ public class Skill
             {
                 Debug.Log(m_name + "Combo!!!!");
                 m_comboCount = 0;
+                return true;
             }
         }
         else
         {
             m_comboCount = 0;
         }
+
+        return false;
     }
     
     public void ClearCombo()

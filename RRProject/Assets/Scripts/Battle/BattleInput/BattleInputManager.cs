@@ -1,12 +1,28 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 
-public class InputManager : MonoBehaviour {
+public class BattleInputManager : MonoBehaviour ,IManager
+{
+    public BattleInputModel m_model;
+    public BattleInputView m_view;
 
 
-    private void Update()
+    public void AwakeMgr()
+    {
+        m_model = Utils.MakeObjectWithComponent<BattleInputModel>("InputModel", this.gameObject);
+        m_model.Init();
+    }
+
+    public void StartMgr()
+    {
+        m_view = Utils.MakeObjectWithComponent<BattleInputView>("InputView", this.gameObject);
+        m_view.Init(m_model);
+    }
+
+    public void UpdateMgr()
     {
         if (Input.GetKeyDown(KeyCode.D))
             BarPanel.GetInst.KeyDown(KeyCode.D);
@@ -24,6 +40,5 @@ public class InputManager : MonoBehaviour {
             BarPanel.GetInst.KeyDown(KeyCode.K);
         if (Input.GetKeyDown(KeyCode.I))
             BarPanel.GetInst.KeyDown(KeyCode.I);
-
     }
 }

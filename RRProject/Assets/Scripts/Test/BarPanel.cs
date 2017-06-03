@@ -36,27 +36,35 @@ public class BarPanel : MonoBehaviour
     public float m_validLen;
 
     public Text m_commandText;
+    public Text m_comboText;
+
+    public int m_comboTextCount;
+
+
 
     private void Start()
     {
+        
         m_inst = this;
+
+        m_comboTextCount = 0;
 
         m_rightBarList = new List<Bar>();
         m_leftBarList = new List<Bar>();
         m_alarmList = new List<Alarm>();
 
-        m_rightBarSpeed = 200.0f;
-        m_rightRegenTime = 3.0f;
+        m_rightBarSpeed = 750.0f;
+        m_rightRegenTime = 1f;
 
-        m_leftBarSpeed = 230.0f;
-        m_leftRegenTime = 2f;
+        m_leftBarSpeed = 750.0f;
+        m_leftRegenTime = 1.0f;
 
         m_rightPassedTime = 0.0f;
         m_leftPassedTime = 0.0f;
 
         m_alarmSpeed = 100.0f;
 
-        m_validLen = 80.0f;
+        m_validLen = 150.0f;
 
         GameObject prefab = Resources.Load("Bar") as GameObject;
 
@@ -117,9 +125,8 @@ public class BarPanel : MonoBehaviour
             {
                 bar.m_rect.localPosition += new Vector3(-m_rightBarSpeed * Time.deltaTime, 0, 0);
 
-                if (bar.m_rect.localPosition.x < 10.0f)
+                if (bar.m_rect.localPosition.x < -5.0f)
                     bar.Disable();
-
             }
         }
     }
@@ -133,7 +140,7 @@ public class BarPanel : MonoBehaviour
             {
                 bar.m_rect.localPosition += new Vector3(m_leftBarSpeed * Time.deltaTime, 0, 0);
 
-                if (bar.m_rect.localPosition.x > 10.0f)
+                if (bar.m_rect.localPosition.x > 5.0f)
                     bar.Disable();
             }
         }
@@ -234,39 +241,20 @@ public class BarPanel : MonoBehaviour
             }
         }
     }
-
-    public void KeyDown(KeyCode _code)
+    public void Combo(string _name)
     {
-        if( _code == KeyCode.D || _code == KeyCode.A || _code == KeyCode.S || _code == KeyCode.W)
+        m_comboTextCount++;
+        if(m_comboTextCount > 8)
         {
-            if (IsValidLeftInput())
-            {
-                SkillManager.GetInst.CheckCombo(_code);
-                m_commandText.text += _code.ToString() + " ";
-                Alarm(true);
-            }
-            else
-            {
-                m_commandText.text = "Command : ";
-                SkillManager.GetInst.ClearCombo();
-                Alarm(false);
-            }
+            m_comboTextCount = 0;
+            m_comboText.text = "Combo :";
         }
 
-        if( _code == KeyCode.L || _code == KeyCode.J || _code == KeyCode.K || _code == KeyCode.I)
-        {
-            if (IsValidRightInput())
-            {
-                SkillManager.GetInst.CheckCombo(_code);
-                m_commandText.text += _code.ToString() + " ";
-                Alarm(true);
-            }
-            else
-            {
-                m_commandText.text = "Command : ";
-                SkillManager.GetInst.ClearCombo();
-                Alarm(false);
-            }
-        }             
+        m_comboText.text += _name + " ";
+        
+    }
+    public void KeyDown(KeyCode _code)
+    {
+       
     }
 }
