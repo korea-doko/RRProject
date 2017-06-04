@@ -3,26 +3,52 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum PlayerSpriteType
+{
+    Normal
+}
 public class PlayerModel : MonoBehaviour
 {
-    public int m_xPos;
-    public int m_yPos;
+    public List<Sprite> m_playerSpriteList;
 
-    public Sprite m_playerSprite;
-
+    public PlayerData m_playerData;
+   
     public void Init()
     {
-        m_xPos = MapManager.GetInst.m_model.m_playerStartPosX;
-        m_yPos = MapManager.GetInst.m_model.m_playerStartPosY;
+        TileData data = MapManager.GetInst.GetValidRandomTileData();
 
-        PlayInputManager.GetInst.m_model.m_cursorX = m_xPos;
-        PlayInputManager.GetInst.m_model.m_cursorY = m_yPos;
+        m_playerData = new PlayerData(data.m_xIndex,data.m_yIndex);
+        
 
-        m_playerSprite = Resources.Load<Sprite>("PlayScene/Images/Char");
+        LoadSprite();
     }    
     public void PlayerMoveBy(int _xOffset, int _yOffset)
     {
-        m_xPos += _xOffset;
-        m_yPos += _yOffset;
+        m_playerData.xIndex += _xOffset;
+        m_playerData.yIndex += _yOffset;
+    }
+
+    public int PlayerCurXPos
+    {
+        get { return m_playerData.xIndex; }
+        set { m_playerData.xIndex= value; }
+    }
+    public int PlayerCurYPos
+    {
+        get { return m_playerData.yIndex; }
+        set { m_playerData.yIndex   = value; }
+    }
+    
+    
+    void LoadSprite()
+    {
+        m_playerSpriteList = new List<Sprite>();
+        int numOfSprite = System.Enum.GetNames(typeof(PlayerSpriteType)).Length;
+
+        for(int i = 0; i < numOfSprite;i++)
+        {
+            Sprite sp = Resources.Load<Sprite>("PlayScene/Images/Players/" + ((PlayerSpriteType)i).ToString());
+            m_playerSpriteList.Add(sp);
+        }
     }
 }

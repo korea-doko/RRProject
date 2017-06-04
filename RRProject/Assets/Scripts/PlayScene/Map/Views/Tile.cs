@@ -6,25 +6,20 @@ using UnityEngine.UI;
 
 public class Tile : MonoBehaviour
 {
-    public Image m_image;
-    public LayoutElement m_layoutEle;
+    public SpriteRenderer m_ren;
 
-    public int m_xPos;
-    public int m_yPos;
+    public int m_xIndex;
+    public int m_yIndex;
 
-    public void Init(int _xPos, int _yPos)
+    public void Init(int _xIndex, int _yIndex)
     {
-        m_image = this.GetComponent<Image>();
-        m_layoutEle = this.GetComponent<LayoutElement>();
-        
-        m_xPos = _xPos;
-        m_yPos = _yPos;
-    }   
+        m_ren = this.GetComponent<SpriteRenderer>();
 
+        m_xIndex = _xIndex;
+        m_yIndex = _yIndex;
+    }   
     public void ChangeSprite(Sprite _sp)
     {
-        m_image.sprite = _sp;
+        m_ren.sprite = _sp;
     }
-
-
 }

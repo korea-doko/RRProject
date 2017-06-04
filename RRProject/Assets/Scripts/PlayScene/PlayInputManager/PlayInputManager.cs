@@ -35,6 +35,12 @@ public class PlayInputManager : MonoBehaviour,IManager {
 
     public void UpdateMgr()
     {
+        //m_view.UpdateView();
+
+        GetInput();         
+    }
+    void GetInput()
+    {
         if (Input.GetKeyDown(KeyCode.A))
             GetKeyInput(KeyCode.A);
         else if (Input.GetKeyDown(KeyCode.S))
@@ -44,18 +50,18 @@ public class PlayInputManager : MonoBehaviour,IManager {
         else if (Input.GetKeyDown(KeyCode.W))
             GetKeyInput(KeyCode.W);
         else if (Input.GetKeyDown(KeyCode.Space))
-            PlayerMoveByCursorPos();            
+            PlayerMoveByCursorPos();
     }
-    
+
     void GetKeyInput(KeyCode _code)
     {
-        int x = m_model.m_cursorX;
-        int y = m_model.m_cursorY;
+        int x = m_model.GetCursorXIndex;
+        int y = m_model.GetCursorYIndex;
 
-        switch(_code)
+        switch (_code)
         {
             case KeyCode.A:
-                x--;                    
+                x--;
                 break;
             case KeyCode.S:
                 y--;
@@ -65,23 +71,21 @@ public class PlayInputManager : MonoBehaviour,IManager {
                 break;
             case KeyCode.W:
                 y++;
-                break;                
+                break;
         }
 
         if (MapManager.GetInst.IsValidMovePosition(x, y))
         {
             m_model.ChangeCursorPosTo(x, y);
-
-            GameObject parent = MapManager.GetInst.GetTile(x, y).gameObject;
-
-            m_view.SetCursorAt(parent);
+            Vector3 pos = MapManager.GetInst.GetTilePosWithIndice(x, y);
+            m_view.ChangeCursorPos(pos);
         }
     }
 
     void PlayerMoveByCursorPos()
     {
-        int x = m_model.m_cursorX;
-        int y = m_model.m_cursorY;
+        int x = m_model.GetCursorXIndex;
+        int y = m_model.GetCursorYIndex;
 
         PlayerManager.GetInst.PlayerMoveTo(x, y);
     }

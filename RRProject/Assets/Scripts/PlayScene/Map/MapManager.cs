@@ -39,20 +39,19 @@ public class MapManager : MonoBehaviour,IManager {
     {
         return m_model.m_tileDataAry[_x][_y];
     }
+    public TileData GetTileData(Tile _tile)
+    {
+        return GetTileData(_tile.m_xIndex, _tile.m_yIndex);
+    }
+    public Tile GetTile(TileData _data)
+    {
+        return GetTile(_data.m_xIndex, _data.m_yIndex);
+    }
     public Tile GetTile(int _x,int _y)
     {
         return m_view.m_tileAry[_x][_y];
     }
-    public void PlayerMoveBy(int _originX, int _originY,int _offsetX,int _offsetY)
-    {
-        Tile origin = GetTile(_originX, _originY);
-        origin.ChangeSprite(m_model.m_tileSprite);
 
-        Tile to = GetTile(_originX + _offsetX, _originY + _offsetY);
-        to.ChangeSprite(PlayerManager.GetInst.m_model.m_playerSprite);
-
-        m_view.MapPanelMoveBy(_offsetX, _offsetY);
-    }
 
     public bool IsValidMovePosition(int _x,int _y)
     {
@@ -69,9 +68,12 @@ public class MapManager : MonoBehaviour,IManager {
 
         return true;
     }
-
     public TileData GetValidRandomTileData()
     {
         return GetTileData(m_model.GetValidRandomX(), m_model.GetValidRandomY());
+    }
+    public Vector3 GetTilePosWithIndice(int _x ,int _y)
+    {
+        return m_view.m_tileAry[_x][_y].transform.position;
     }
 }

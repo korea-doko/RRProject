@@ -8,3 +8,7 @@ public interface IManager
     void StartMgr();
     void UpdateMgr();
 }
+public interface IView
+{
+    void UpdateView();
+}

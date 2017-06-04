@@ -19,19 +19,15 @@ public class PlayerManager : MonoBehaviour,IManager{
     public PlayerView m_view;
     
 
-    public void PlayerMoveBy(int _xOffset, int _yOffset)
-    {
-        MapManager.GetInst.PlayerMoveBy(m_model.m_xPos, m_model.m_yPos, _xOffset, _yOffset);
-
-        m_model.PlayerMoveBy(_xOffset, _yOffset); 
-    }
+    
     public void PlayerMoveTo(int _destX, int _destY)
     {
-        int offsetX = _destX - m_model.m_xPos;
-        int offsetY = _destY - m_model.m_yPos;
+        m_model.PlayerCurXPos = _destX;
+        m_model.PlayerCurYPos = _destY;
 
-        MapManager.GetInst.PlayerMoveBy(m_model.m_xPos, m_model.m_yPos, offsetX, offsetY);
-        m_model.PlayerMoveBy(offsetX, offsetY);                
+        m_view.PlayerMoveTo(_destX, _destY);
+
+        CameraManager.GetInst.CameraMoveTo(_destX, _destY);
     }
 
 
@@ -45,11 +41,11 @@ public class PlayerManager : MonoBehaviour,IManager{
     }
     public void StartMgr()
     {
-        PlayerMoveBy(0, 0);
+
     }
     public void UpdateMgr()
     {
-
+        m_view.UpdateView();
     }
 
 }

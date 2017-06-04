@@ -5,10 +5,11 @@ using UnityEngine;
 
 public enum PlaySceneManagerName
 {
-    PlayInput,
-    Skill,
     Map,
-    Player      // 맵 보다 늦게 만들어져야 한다.
+    Player,
+    PlayInput,
+    Camera,
+    Skill    
 }
 
 public class PlayManager : MonoBehaviour,IManager{
@@ -72,5 +73,4 @@ public class PlayManager : MonoBehaviour,IManager{
     {
         UpdateMgr();	
 	}
-
 }

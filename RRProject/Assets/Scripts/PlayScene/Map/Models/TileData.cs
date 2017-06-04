@@ -5,15 +5,15 @@ using UnityEngine;
 [System.Serializable]
 public class TileData 
 {
-    public int m_xPos;
-    public int m_yPos;
+    public int m_xIndex;
+    public int m_yIndex;
 
     public bool m_isObs;
 
-    public TileData(int _xPos , int _yPos)
+    public TileData(int _xIndex, int _yIndex)
     {
-        m_xPos = _xPos;
-        m_yPos = _yPos;
+        m_xIndex = _xIndex;
+        m_yIndex = _yIndex;
         m_isObs = false;
     }
     public void SetAsObstacle()
