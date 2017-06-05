@@ -9,6 +9,7 @@ public class TileData
     public int m_yIndex;
 
     public bool m_isObs;
+    
 
     public TileData(int _xIndex, int _yIndex)
     {

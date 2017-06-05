@@ -35,7 +35,6 @@ public class CameraManager : MonoBehaviour ,IManager{
     {
 
     }
-
     public void CameraMoveTo(int _xTileIndex, int _yTileIndex)
     {
         Vector3 tilePos = MapManager.GetInst.GetTilePosWithIndice(_xTileIndex, _yTileIndex);

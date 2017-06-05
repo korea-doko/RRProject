@@ -53,7 +53,7 @@ public class MapManager : MonoBehaviour,IManager {
     }
 
 
-    public bool IsValidMovePosition(int _x,int _y)
+    public bool IsValidMoveIndex(int _x,int _y)
     {
         if (_x >= m_model.m_mapWidth || _x < 0)
             return false;
@@ -76,4 +76,5 @@ public class MapManager : MonoBehaviour,IManager {
     {
         return m_view.m_tileAry[_x][_y].transform.position;
     }
+
 }

@@ -20,16 +20,7 @@ public class PlayerManager : MonoBehaviour,IManager{
     
 
     
-    public void PlayerMoveTo(int _destX, int _destY)
-    {
-        m_model.PlayerCurXPos = _destX;
-        m_model.PlayerCurYPos = _destY;
-
-        m_view.PlayerMoveTo(_destX, _destY);
-
-        CameraManager.GetInst.CameraMoveTo(_destX, _destY);
-    }
-
+    
 
     public void AwakeMgr()
     {
@@ -48,4 +39,21 @@ public class PlayerManager : MonoBehaviour,IManager{
         m_view.UpdateView();
     }
 
+    public void NextTurn()
+    {
+        int destX = PlayInputManager.GetInst.m_model.GetCursorXIndex;
+        int destY = PlayInputManager.GetInst.m_model.GetCursorYIndex;
+
+        PlayerMoveTo(destX, destY);
+    }
+
+    void PlayerMoveTo(int _destX, int _destY)
+    {
+        m_model.PlayerCurXPos = _destX;
+        m_model.PlayerCurYPos = _destY;
+
+        m_view.PlayerMoveTo(_destX, _destY);
+
+        CameraManager.GetInst.CameraMoveTo(_destX, _destY);
+    }
 }

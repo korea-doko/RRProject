@@ -32,7 +32,6 @@ public class PlayInputManager : MonoBehaviour,IManager {
     {
 
     }
-
     public void UpdateMgr()
     {
         //m_view.UpdateView();
@@ -50,7 +49,7 @@ public class PlayInputManager : MonoBehaviour,IManager {
         else if (Input.GetKeyDown(KeyCode.W))
             GetKeyInput(KeyCode.W);
         else if (Input.GetKeyDown(KeyCode.Space))
-            PlayerMoveByCursorPos();
+            NextTurn();
     }
 
     void GetKeyInput(KeyCode _code)
@@ -74,7 +73,7 @@ public class PlayInputManager : MonoBehaviour,IManager {
                 break;
         }
 
-        if (MapManager.GetInst.IsValidMovePosition(x, y))
+        if (MapManager.GetInst.IsValidMoveIndex(x, y))
         {
             m_model.ChangeCursorPosTo(x, y);
             Vector3 pos = MapManager.GetInst.GetTilePosWithIndice(x, y);
@@ -82,11 +81,8 @@ public class PlayInputManager : MonoBehaviour,IManager {
         }
     }
 
-    void PlayerMoveByCursorPos()
+    void NextTurn()
     {
-        int x = m_model.GetCursorXIndex;
-        int y = m_model.GetCursorYIndex;
-
-        PlayerManager.GetInst.PlayerMoveTo(x, y);
+        TurnManager.GetInst.NextTurn();
     }
 }
