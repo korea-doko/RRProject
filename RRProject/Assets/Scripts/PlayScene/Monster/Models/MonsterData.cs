@@ -34,7 +34,11 @@ public class MonsterData
     {
         get { return m_parentTileData; }
     }
-    
+    public int HP
+    {
+        get { return m_hp; }
+    }
+
     public void ChangePosIndex(int _xIndex, int _yIndex)
     {
         m_xIndex = _xIndex;

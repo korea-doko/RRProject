@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraView : MonoBehaviour ,IView{
+public class CameraView : MonoBehaviour {
 
     public Camera m_cam;
 

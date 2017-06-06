@@ -12,7 +12,7 @@ public class PlayerModel : MonoBehaviour
     public List<Sprite> m_playerSpriteList;
 
     public PlayerData m_playerData;
-   
+
     public void Init()
     {
         TileData data = MapManager.GetInst.GetValidRandomTileData();

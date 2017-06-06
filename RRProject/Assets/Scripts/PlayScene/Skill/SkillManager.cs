@@ -9,7 +9,6 @@ public class SkillManager : MonoBehaviour,IManager
     public SkillView m_view;
 
     static SkillManager m_inst;
-
     public static SkillManager GetInst
     {
         get { return m_inst; }
@@ -26,54 +25,13 @@ public class SkillManager : MonoBehaviour,IManager
         m_model.Init();
 
         m_view = Utils.MakeObjectWithComponent<SkillView>("SkillView", this.gameObject);
-        m_view.Init(m_model);
-        //m_inst = this;
-
-        //m_skillList = new List<Skill>();
-
-        //for (int i = 0; i < 4; i++)
-        //{
-        //    int numOfCombo = Random.Range(3, 5);
-        //    KeyCode[] code = new KeyCode[numOfCombo];
-
-        //    for (int k = 0; k < numOfCombo; k++)
-        //    {
-        //        int q = Random.Range(0, 7);
-        //        KeyCode key = KeyCode.A;
-
-        //        if (q == 0)
-        //            key = KeyCode.A;
-        //        else if (q == 1)
-        //            key = KeyCode.S;
-        //        else if (q == 2)
-        //            key = KeyCode.D;
-        //        else if (q == 3)
-        //            key = KeyCode.W;
-        //        else if (q == 4)
-        //            key = KeyCode.J;
-        //        else if (q == 5)
-        //            key = KeyCode.K;
-        //        else if (q == 6)
-        //            key = KeyCode.L;
-        //        else
-        //            key = KeyCode.I;
-
-
-        //        code[k] = key;
-        //    }
-
-        //    Skill skill = new Skill("Skill Name" + i.ToString(), code);
-        //    m_skillList.Add(skill);
-        //}
-
-        //SkillCommandContainerPanel.GetInst.Init(m_skillList);
+        m_view.Init(m_model);      
     }
 
     public void StartMgr()
     {
         
     }
-
     public void UpdateMgr()
     {
 
@@ -81,5 +39,23 @@ public class SkillManager : MonoBehaviour,IManager
     public void SceneChanged()
     {
 
+    }
+
+    public void CheckSkillItemExists(TileData _data)
+    {
+        for(int i = 0; i < m_model.m_skillItemDataList.Count;i++)
+        {
+            SkillItemData sid = m_model.m_skillItemDataList[i];
+
+            if (!sid.m_isEnable)
+                continue;
+
+            if (_data.m_xIndex == sid.m_tileData.m_xIndex && _data.m_yIndex == sid.m_tileData.m_yIndex)
+            {
+                sid.m_isEnable = false;
+                PlayerManager.GetInst.m_model.m_playerData.AddSkillData(sid.m_skillData);
+                m_view.DisableSkillItem(sid);
+            }
+        }
     }
 }

@@ -13,10 +13,14 @@ public class PlayerData
     TileData m_parentTileData;
     [SerializeField]
     int m_hp;
+    [SerializeField]
+    List<SkillData> m_skillDataList;
 
 
     public PlayerData(int _xIndex, int _yIndex)
     {
+        m_skillDataList = new List<SkillData>();
+
         m_xIndex = _xIndex;
         m_yIndex = _yIndex;
         m_parentTileData = MapManager.GetInst.GetTileData(m_xIndex, m_yIndex);
@@ -46,5 +50,13 @@ public class PlayerData
         m_yIndex = _yIndex;
 
         m_parentTileData = MapManager.GetInst.GetTileData(m_xIndex, m_yIndex);
+    }
+    public void AddSkillData(SkillData _data)
+    {
+        m_skillDataList.Add(_data);
+    }
+    public List<SkillData> SkillDataList
+    {
+        get { return m_skillDataList; }
     }
 }

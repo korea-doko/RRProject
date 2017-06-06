@@ -8,9 +8,9 @@ using UnityEngine.UI;
 
 public enum BattleSceneManagerName
 {
-    BattleMonster,
-    BattlePlayer,
-    BattleInput,
+    BMonster,
+    BPlayer,
+    BInput,
     Bar
 }
 public class BattleManager : MonoBehaviour ,IManager{

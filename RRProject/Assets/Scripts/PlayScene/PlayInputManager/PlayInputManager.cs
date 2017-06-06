@@ -50,6 +50,7 @@ public class PlayInputManager : MonoBehaviour,IManager {
             GetKeyInput(KeyCode.W);
         else if (Input.GetKeyDown(KeyCode.Space))
             NextTurn();
+
     }
 
     void GetKeyInput(KeyCode _code)
@@ -72,6 +73,7 @@ public class PlayInputManager : MonoBehaviour,IManager {
                 y++;
                 break;
         }
+        
 
         if (MapManager.GetInst.IsValidMoveIndex(x, y))
         {

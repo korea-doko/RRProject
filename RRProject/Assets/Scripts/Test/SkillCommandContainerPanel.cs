@@ -14,17 +14,17 @@ public class SkillCommandContainerPanel : MonoBehaviour {
     {
         m_inst = this;
     }
-    public void Init(List<Skill> _skList)
-    {
-        m_skillPanelList = new List<SkillCommandPanel>();
+    //public void Init(List<Skill> _skList)
+    //{
+    //    m_skillPanelList = new List<SkillCommandPanel>();
 
-        GameObject prefab = Resources.Load("SkillCommandPanel") as GameObject;
+    //    GameObject prefab = Resources.Load("SkillCommandPanel") as GameObject;
 
-        for(int i = 0; i < _skList.Count;i++)
-        {
-            SkillCommandPanel p = ((GameObject)Instantiate(prefab)).GetComponent<SkillCommandPanel>();
-            p.transform.SetParent(this.transform);
-            p.Init(_skList[i]);
-        }        
-    }
+    //    for(int i = 0; i < _skList.Count;i++)
+    //    {
+    //        SkillCommandPanel p = ((GameObject)Instantiate(prefab)).GetComponent<SkillCommandPanel>();
+    //        p.transform.SetParent(this.transform);
+    //        p.Init(_skList[i]);
+    //    }        
+    //}
 }

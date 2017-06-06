@@ -3,7 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayInputView : MonoBehaviour, IView {
+public class PlayInputView : MonoBehaviour
+{
 
     public Cursor m_cursor;
 

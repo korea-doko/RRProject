@@ -33,6 +33,9 @@ public class PlayerManager : MonoBehaviour,IManager{
     public void StartMgr()
     {
 
+        SkillData skillData = SkillManager.GetInst.m_model.m_skillDataList[0];
+        m_model.m_playerData.AddSkillData(skillData);
+
     }
     public void UpdateMgr()
     {
@@ -59,12 +62,11 @@ public class PlayerManager : MonoBehaviour,IManager{
          */
 
        if( MonsterManager.GetInst.CheckMonsterExists(m_model.m_playerData.ParentTileData))
-        {
-            // 전투씬으로의 전환
-
-
             PlayManager.GetInst.PlayerEncountMonster(m_model.m_playerData);
-        }
+
+        SkillManager.GetInst.CheckSkillItemExists(m_model.m_playerData.ParentTileData);
+            
+
     }
     public void SceneChanged()
     {

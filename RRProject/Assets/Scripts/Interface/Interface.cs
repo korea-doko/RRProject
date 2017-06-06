@@ -10,7 +10,7 @@ public interface IManager
 
     void SceneChanged();
 }
-public interface IView
+public interface IView<T>
 {
-    void UpdateView();
+    void UpdateView(T _model);
 }
