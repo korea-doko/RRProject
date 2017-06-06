@@ -14,12 +14,14 @@ public class BattleInputManager : MonoBehaviour ,IManager
     {
         m_model = Utils.MakeObjectWithComponent<BattleInputModel>("InputModel", this.gameObject);
         m_model.Init();
+
+        m_view = Utils.MakeObjectWithComponent<BattleInputView>("InputView", this.gameObject);
+        m_view.Init(m_model);
     }
 
     public void StartMgr()
     {
-        m_view = Utils.MakeObjectWithComponent<BattleInputView>("InputView", this.gameObject);
-        m_view.Init(m_model);
+
     }
 
     public void UpdateMgr()
@@ -40,5 +42,9 @@ public class BattleInputManager : MonoBehaviour ,IManager
             BarPanel.GetInst.KeyDown(KeyCode.K);
         if (Input.GetKeyDown(KeyCode.I))
             BarPanel.GetInst.KeyDown(KeyCode.I);
+    }
+    public void SceneChanged()
+    {
+
     }
 }

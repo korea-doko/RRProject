@@ -20,5 +20,5 @@ public class TileData
     public void SetAsObstacle()
     {
         m_isObs = true;
-    }
+    }    
 }

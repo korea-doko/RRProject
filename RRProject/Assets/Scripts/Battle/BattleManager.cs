@@ -1,16 +1,91 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
-public class BattleManager : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+
+public enum BattleSceneManagerName
+{
+    BattleMonster,
+    BattlePlayer,
+    BattleInput,
+    Bar
+}
+public class BattleManager : MonoBehaviour ,IManager{
+
+    public bool m_isActivated;
+
+    public static BattleManager GetInst
+    {
+        get { return m_inst; }
+    }
+    private static BattleManager m_inst;
+    public BattleManager()
+    {
+        m_inst = this;
+    }
+   
+    public IManager[] m_mgrAry;
+    public int m_numOfMgr;
+
+    public void SceneChanged()
+    {
+        for(int i = 0; i < m_numOfMgr;i++)
+        {
+            if (m_mgrAry[i] != null)
+                m_mgrAry[i].SceneChanged();
+        }
+        m_isActivated = true;
+    }
+
+
+    public void AwakeMgr()
+    {
+        m_numOfMgr = System.Enum.GetNames(typeof(BattleSceneManagerName)).Length;
+        m_mgrAry = new IManager[m_numOfMgr];
+
+        for (int i = 0; i < m_numOfMgr; i++)
+        {
+            string mgrName = ((BattleSceneManagerName)i).ToString() + "Manager";
+            GameObject obj = Utils.MakeObjectWithType(mgrName, this.gameObject);
+            m_mgrAry[i] = obj.GetComponent<IManager>();
+
+            m_mgrAry[i].AwakeMgr();
+        }
+    }
+    public void StartMgr()
+    {
+        for (int i = 0; i < m_numOfMgr; i++)
+        {
+            if (m_mgrAry[i] != null)
+                m_mgrAry[i].StartMgr();
+        }
+    }
+    public void UpdateMgr()
+    {
+        if( m_isActivated )
+        {
+            for (int i = 0; i < m_numOfMgr; i++)
+            {
+                if (m_mgrAry[i] != null)
+                    m_mgrAry[i].UpdateMgr();
+            }
+        }
+    }
+
+    void Awake()
+    {
+        AwakeMgr();
+    }
+    void Start()
+    {
+        StartMgr();
+    }
+    void Update()
+    {
+        UpdateMgr();
+    }
+
 }

@@ -77,4 +77,8 @@ public class MapManager : MonoBehaviour,IManager {
         return m_view.m_tileAry[_x][_y].transform.position;
     }
 
+    public void SceneChanged()
+    {
+
+    }
 }

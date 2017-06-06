@@ -85,4 +85,8 @@ public class PlayInputManager : MonoBehaviour,IManager {
     {
         TurnManager.GetInst.NextTurn();
     }
+    public void SceneChanged()
+    {
+
+    }
 }

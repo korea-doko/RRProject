@@ -48,6 +48,34 @@ public class MonsterManager : MonoBehaviour,IManager {
         m_view.MonsterMove(m_model);
     }
 
+    public bool CheckMonsterExists(TileData _data)
+    {
+        for(int i = 0; i < m_model.m_monsterDataList.Count;i++)
+        {
+            MonsterData data = m_model.m_monsterDataList[i];
+            if (data.ParentTileData.m_xIndex == _data.m_xIndex &&
+                data.ParentTileData.m_yIndex == _data.m_yIndex)
+            {                
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public MonsterData GetMonsterData(int _xIndex, int _yIndex)
+    {
+        for(int i = 0; i < m_model.m_monsterDataList.Count;i++)
+        {
+            MonsterData data = m_model.m_monsterDataList[i];
+
+            if (data.xIndex == _xIndex && data.yIndex == _yIndex)
+                return data;
+        }
+
+        return null;
+    }
+
+
     public void AwakeMgr()
     {
         m_model = Utils.MakeObjectWithComponent<MonsterModel>("MonsterModel", this.gameObject);
@@ -63,5 +91,9 @@ public class MonsterManager : MonoBehaviour,IManager {
     public void UpdateMgr()
     {
 
-    }   
+    }
+    public void SceneChanged()
+    {
+
+    }
 }

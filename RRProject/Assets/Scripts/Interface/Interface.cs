@@ -7,6 +7,8 @@ public interface IManager
     void AwakeMgr();
     void StartMgr();
     void UpdateMgr();
+
+    void SceneChanged();
 }
 public interface IView
 {

@@ -78,4 +78,8 @@ public class SkillManager : MonoBehaviour,IManager
     {
 
     }
+    public void SceneChanged()
+    {
+
+    }
 }

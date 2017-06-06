@@ -12,10 +12,13 @@ public class MonsterData
     int m_yIndex;
     [SerializeField]
     TileData m_parentTileData;
+    [SerializeField]
+    int m_hp;
 
-
-    public MonsterData(int _xIndex,int _yIndex)
+    public MonsterData(int _xIndex,int _yIndex, int _hp)
     {
+        m_hp = _hp; 
+
         ChangePosIndex(_xIndex, _yIndex);
     }
 

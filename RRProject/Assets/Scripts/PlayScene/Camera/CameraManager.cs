@@ -42,4 +42,9 @@ public class CameraManager : MonoBehaviour ,IManager{
 
         m_view.CameraMoveTo(m_model);
     }
+
+    public void SceneChanged()
+    {
+
+    }
 }

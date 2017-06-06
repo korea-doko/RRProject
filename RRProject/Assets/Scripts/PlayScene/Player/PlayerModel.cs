@@ -24,19 +24,16 @@ public class PlayerModel : MonoBehaviour
     }    
     public void PlayerMoveBy(int _xOffset, int _yOffset)
     {
-        m_playerData.xIndex += _xOffset;
-        m_playerData.yIndex += _yOffset;
+        m_playerData.ChangePosIndex(m_playerData.xIndex + _xOffset, m_playerData.yIndex + _yOffset);
     }
 
     public int PlayerCurXPos
     {
         get { return m_playerData.xIndex; }
-        set { m_playerData.xIndex= value; }
     }
     public int PlayerCurYPos
     {
         get { return m_playerData.yIndex; }
-        set { m_playerData.yIndex   = value; }
     }
     
     

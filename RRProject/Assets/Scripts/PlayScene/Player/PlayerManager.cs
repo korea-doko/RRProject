@@ -49,11 +49,25 @@ public class PlayerManager : MonoBehaviour,IManager{
 
     void PlayerMoveTo(int _destX, int _destY)
     {
-        m_model.PlayerCurXPos = _destX;
-        m_model.PlayerCurYPos = _destY;
-
+        m_model.m_playerData.ChangePosIndex(_destX, _destY);
         m_view.PlayerMoveTo(_destX, _destY);
 
         CameraManager.GetInst.CameraMoveTo(_destX, _destY);
+
+        /*
+         *  일단 여기서 몬스터가 있는지 검사하고 바로 전투 씬으로 넘기도록 한다. 
+         */
+
+       if( MonsterManager.GetInst.CheckMonsterExists(m_model.m_playerData.ParentTileData))
+        {
+            // 전투씬으로의 전환
+
+
+            PlayManager.GetInst.PlayerEncountMonster(m_model.m_playerData);
+        }
+    }
+    public void SceneChanged()
+    {
+
     }
 }

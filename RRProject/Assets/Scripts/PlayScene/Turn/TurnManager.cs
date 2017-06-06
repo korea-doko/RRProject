@@ -18,8 +18,6 @@ public class TurnManager : MonoBehaviour,IManager {
         m_inst = this;
     }
 
-
-
     public void NextTurn()
     {
         PlayerManager.GetInst.NextTurn();
@@ -41,5 +39,8 @@ public class TurnManager : MonoBehaviour,IManager {
     public void UpdateMgr()
     {
     }
+    public void SceneChanged()
+    {
 
+    }
 }

@@ -13,4 +13,13 @@ public class LobbyManager : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public void SelectChar()
+    {
+        MySceneManager.GetInst.LoadScene(SceneName.Play);
+    }
+    public void SceneChanged()
+    {
+
+    }
 }

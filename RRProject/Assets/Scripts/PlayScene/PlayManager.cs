@@ -25,9 +25,6 @@ public class PlayManager : MonoBehaviour,IManager{
     public IManager[] m_mgrAry;
     public int m_numOfMgr;
 
-
-
-
     public static PlayManager GetInst
     {
         get { return m_inst; }
@@ -75,4 +72,25 @@ public class PlayManager : MonoBehaviour,IManager{
     {
         UpdateMgr();	
 	}
+
+    public void PlayerEncountMonster(PlayerData _data)
+    {
+        MonsterData monData = MonsterManager.GetInst.GetMonsterData(_data.xIndex, _data.yIndex);
+        
+        PlayToBattleDataPassManager.GetInst.SetBattleData(_data, monData);
+
+    }
+    public void MonsterEncountPlayer()
+    {
+
+    }
+
+    public void SceneChanged()
+    {
+        for (int i = 0; i < m_numOfMgr; i++)
+        {
+            if (m_mgrAry[i] != null)
+                m_mgrAry[i].SceneChanged();
+        }
+    }
 }
