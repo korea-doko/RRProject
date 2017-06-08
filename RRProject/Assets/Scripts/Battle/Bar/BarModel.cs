@@ -5,9 +5,18 @@ using UnityEngine;
 
 public enum BarType
 {
-    White,          // 안쳐도 손해 x, 그러나 콤보 끊김
-    Red,            // 안치면 손해 o, 그리고 콤보 끊김
-    Blue            // 무효키로 치면 콤보 안끊김, 손해 없음, 나머지 키 누르면 콤보 끊김
+    Normal,                 // 안쳐도 손해 x, 그러나 콤보 끊김
+    Untouchable,            // 안치면 손해 o, 그리고 콤보 끊김
+    Touchable,              // 무효키로 치면 콤보 안끊김, 손해 없음, 나머지 키 누르면 콤보 끊김
+}
+public enum BarSpriteName
+{
+    Black,
+    Blue,
+    Green,
+    Red,
+    Yellow,
+    White
 }
 public class BarModel : MonoBehaviour
 {
@@ -29,11 +38,11 @@ public class BarModel : MonoBehaviour
     {
         m_barSpriteList = new List<Sprite>();
 
-        int numOfSpriteType = System.Enum.GetNames(typeof(BarType)).Length;
+        int numOfSpriteType = System.Enum.GetNames(typeof(BarSpriteName)).Length;
 
         for (int i = 0; i < numOfSpriteType;i++)
         {
-            Sprite sp = Resources.Load<Sprite>("BattleScene/Images/" + ((BarType)i).ToString()+"Bar");
+            Sprite sp = Resources.Load<Sprite>("BattleScene/Images/" + ((BarSpriteName)i).ToString()+"Bar");
             m_barSpriteList.Add(sp);
         }        
     }
@@ -73,8 +82,8 @@ public class BarModel : MonoBehaviour
     {
         return m_sensorDataAry[(int)_dir];
     }
-    public Sprite GetBarSprite(BarType _type)
+    public Sprite GetBarSprite(BarSpriteName _barName)
     {
-        return m_barSpriteList[(int)_type];
+        return m_barSpriteList[(int)_barName];
     }
 }

@@ -7,6 +7,8 @@ using UnityEngine;
 public class MonsterData
 {
     [SerializeField]
+    int m_id;
+    [SerializeField]
     int m_xIndex;
     [SerializeField]
     int m_yIndex;
@@ -14,14 +16,29 @@ public class MonsterData
     TileData m_parentTileData;
     [SerializeField]
     int m_hp;
+    [SerializeField]
+    bool m_isDead;
 
-    public MonsterData(int _xIndex,int _yIndex, int _hp)
+
+    public MonsterData(int _id,int _xIndex,int _yIndex, int _hp)
     {
-        m_hp = _hp; 
-
+        m_id = _id;
+        m_hp = _hp;
+        m_isDead = false;
         ChangePosIndex(_xIndex, _yIndex);
     }
 
+    public void ChangeMonsterData(BMonsterData _data)
+    {
+        m_hp = _data.m_hp;
+        if (m_hp <= 0)
+            m_isDead = true;
+    }
+
+    public int ID
+    {
+        get { return m_id; }
+    }
     public int xIndex
     {
         get { return m_xIndex; }
@@ -37,6 +54,10 @@ public class MonsterData
     public int HP
     {
         get { return m_hp; }
+    }
+    public bool IsAlive
+    {
+        get { return !m_isDead; }
     }
 
     public void ChangePosIndex(int _xIndex, int _yIndex)

@@ -32,7 +32,7 @@ public class SkillPanel : MonoBehaviour
 
         string str = _data.m_name + " : ";
         for (int i = 0; i < _data.m_comboList.Count; i++)
-            str += _data.m_comboList[i].ToString() + " ";
+            str += _data.m_comboList[i].m_code.ToString() + "(" + _data.m_comboList[i].m_property.ToString() + ") ";
 
         t.text = str;
         t.gameObject.SetActive(true);

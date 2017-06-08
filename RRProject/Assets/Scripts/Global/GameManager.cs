@@ -6,7 +6,7 @@ using UnityEngine;
 public enum GlobalManagerName
 {
     MyScene,    
-    PlayToBattleDataPass
+    DataPass
 }
 public class GameManager : MonoBehaviour
 {

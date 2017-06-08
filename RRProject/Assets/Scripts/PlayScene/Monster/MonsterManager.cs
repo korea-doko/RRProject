@@ -62,6 +62,7 @@ public class MonsterManager : MonoBehaviour,IManager {
 
         return false;
     }
+
     public MonsterData GetMonsterData(int _xIndex, int _yIndex)
     {
         for(int i = 0; i < m_model.m_monsterDataList.Count;i++)
@@ -74,7 +75,28 @@ public class MonsterManager : MonoBehaviour,IManager {
 
         return null;
     }
+    public MonsterData GetMonsterData(int _id)
+    {
+        for(int i = 0; i < m_model.m_monsterDataList.Count;i++)
+        {
+            if (m_model.m_monsterDataList[i].ID == _id)
+                return m_model.m_monsterDataList[i];
+        }
 
+        Debug.Log("나올 수 없음");
+        return null;
+    }
+    public Monster GetMonster(MonsterData _data)
+    {
+        for(int i = 0; i < m_view.m_monsterList.Count;i++)
+        {
+            if (m_view.m_monsterList[i].m_id == _data.ID)
+                return m_view.m_monsterList[i];
+        }
+
+        Debug.Log("나올 수 없음");
+        return null;
+    }
 
     public void AwakeMgr()
     {
@@ -90,10 +112,21 @@ public class MonsterManager : MonoBehaviour,IManager {
     }
     public void UpdateMgr()
     {
-
+        m_view.UpdateView(m_model);
     }
     public void SceneChanged()
     {
+        if (DataPassManager.GetInst.m_battleToPlayST.m_bMonsterDataAry == null)
+            return;
 
+        BMonsterData[] bMonAry = DataPassManager.GetInst.m_battleToPlayST.m_bMonsterDataAry;
+
+        for(int i = 0; i < bMonAry.Length;i++)
+        {
+            BMonsterData bData = bMonAry[i];
+
+            MonsterData data = GetMonsterData(bData.m_id);
+            data.ChangeMonsterData(bData);            
+        }
     }
 }

@@ -75,6 +75,17 @@ public class BattleManager : MonoBehaviour ,IManager{
         }
     }
 
+
+    public void BattleIsOver(bool _isPlayerWin)
+    {
+        List<BMonsterData> bMonList = BMonsterManager.GetInst.m_model.m_bMonsterDataList;
+        BMonsterData[] bMonAry = new BMonsterData[bMonList.Count];
+        for (int i = 0; i < bMonList.Count; i++)
+            bMonAry[i] = bMonList[i];
+
+        DataPassManager.GetInst.SetBattleToPlayData(_isPlayerWin,bMonAry);
+    }
+
     void Awake()
     {
         AwakeMgr();

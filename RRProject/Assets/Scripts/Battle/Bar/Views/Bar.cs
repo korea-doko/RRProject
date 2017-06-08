@@ -29,7 +29,25 @@ public class Bar : MonoBehaviour
     }
     public void Enable(BarData _data)
     {
-        m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(_data.m_type);
+        if(_data.m_type == BarType.Normal)
+        {
+            if (_data.m_skillPropertyName == SkillPropertyName.Black)
+                m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.Black);
+            else if (_data.m_skillPropertyName == SkillPropertyName.Green)
+                m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.Green);
+            else if (_data.m_skillPropertyName == SkillPropertyName.Yellow)
+                m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.Yellow);
+            else
+                m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.White);
+        }
+        else if( _data.m_type == BarType.Touchable)
+        {
+            m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.Blue);
+        }
+        else
+        {
+            m_image.sprite = BarManager.GetInst.m_model.GetBarSprite(BarSpriteName.Red);
+        }
 
         m_isActive = true;
         this.gameObject.SetActive(m_isActive);

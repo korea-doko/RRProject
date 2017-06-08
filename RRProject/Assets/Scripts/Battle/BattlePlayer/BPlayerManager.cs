@@ -38,6 +38,31 @@ public class BPlayerManager : MonoBehaviour ,IManager{
     }
     public void SceneChanged()
     {
-        m_model.m_playerData.SetData(PlayToBattleDataPassManager.GetInst.m_playerData);
+        PlayerData data = DataPassManager.GetInst.m_playToBattleSt.m_playerData;
+        m_model.m_playerData.SetData(data);
+    }
+
+    public void GetCommand(KeyCode _code , SkillPropertyName _name)
+    {
+        for (int i = 0; i < m_model.m_playerData.m_skillDataList.Count; i++)
+        {
+            SkillData sd = m_model.m_playerData.m_skillDataList[i];
+
+            if (sd.CheckCombo(_code, _name))
+            {
+                // 여기 있다는 것은 스킬이 나가야 한다는 것                
+                //sd.Cast();
+                BMonsterManager.GetInst.MonsterGetDamage(7);
+            }
+            
+        }
+    }
+    public void CommandFail()
+    {
+        for (int i = 0; i < m_model.m_playerData.m_skillDataList.Count; i++)
+        {
+            SkillData sd = m_model.m_playerData.m_skillDataList[i];
+            sd.ClearCombo();
+        }
     }
 }

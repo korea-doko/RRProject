@@ -36,5 +36,28 @@ public class BMonsterModel : MonoBehaviour {
         Debug.Log("나올수 없음");
         return null;
     }
+    public void GetDamage(int _damage)
+    {
+        // 여기서는 어떻게 나누는지 상관없이 그냥 다 똑같이 데미지 받는다
 
+        for(int i = 0; i < m_bMonsterDataList.Count;i++)
+        {
+            
+            BMonsterData bData = m_bMonsterDataList[i];
+
+            if (bData.m_isInit)
+            {
+                bData.m_hp -= _damage;
+            }
+            else
+                break;
+        }
+
+        m_isModelChanged = true;
+    }
+    public int GetMonsterHP()
+    {
+        // 일단 그냥 0번 놈의 데이터가져다가 쓰자
+        return m_bMonsterDataList[0].m_hp;
+    }
 }

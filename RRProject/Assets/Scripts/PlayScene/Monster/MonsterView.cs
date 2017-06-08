@@ -1,8 +1,9 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterView : MonoBehaviour {
+public class MonsterView : MonoBehaviour,IView<MonsterModel> {
 
     public List<Monster> m_monsterList;
 
@@ -29,13 +30,24 @@ public class MonsterView : MonoBehaviour {
 
     public void MonsterMove(MonsterModel _model)
     {
-
         for(int i = 0; i < m_monsterList.Count;i++)
         {
             MonsterData data = _model.m_monsterDataList[i];
             Monster mon = m_monsterList[i];
 
             mon.SetParentTile(data.ParentTileData);
+        }
+    }
+
+    public void UpdateView(MonsterModel _model)
+    {
+        for(int i = 0; i < _model.m_monsterDataList.Count;i++)
+        {
+            MonsterData data = _model.m_monsterDataList[i];
+            Monster mon = m_monsterList[i];
+
+            if (!data.IsAlive)
+                mon.Disable();
         }
     }
 }

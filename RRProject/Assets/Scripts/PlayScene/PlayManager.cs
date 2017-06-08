@@ -16,6 +16,7 @@ public enum PlaySceneManagerName
 
 public class PlayManager : MonoBehaviour,IManager{
 
+    
     private static PlayManager m_inst;
     public PlayManager()
     {
@@ -31,6 +32,7 @@ public class PlayManager : MonoBehaviour,IManager{
     }
     public void AwakeMgr()
     {
+       
         m_numOfMgr = System.Enum.GetNames(typeof(PlaySceneManagerName)).Length;
         m_mgrAry = new IManager[m_numOfMgr];
 
@@ -77,8 +79,7 @@ public class PlayManager : MonoBehaviour,IManager{
     {
         MonsterData monData = MonsterManager.GetInst.GetMonsterData(_data.xIndex, _data.yIndex);
         
-        PlayToBattleDataPassManager.GetInst.SetBattleData(_data, monData);
-
+        DataPassManager.GetInst.SetPlayToBattleData(_data, monData);
     }
     public void MonsterEncountPlayer()
     {

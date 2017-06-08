@@ -22,13 +22,12 @@ public class BarManager : MonoBehaviour,IManager {
     public float m_leftBarInterval;
     // bar가 어떤 간격으로 나오냐?
 
-
     public float m_rightBarPassedTime;
     public float m_leftBarPassedTime;
    
     public void AwakeMgr()
     {
-        m_rightBarInterval = 3.0f;
+        m_rightBarInterval = 2.0f;
         m_rightBarPassedTime = 0.0f;
         
         m_leftBarInterval = 3.0f;
@@ -53,18 +52,18 @@ public class BarManager : MonoBehaviour,IManager {
                 //키가 입력이 확인됐다. 그렇다면 입력된 커맨드, 그리고 타입을 구분해야 한다.
 
                 BarData data = m_model.GetBarData(bar);
-
+                
                 switch (data.m_type)
                 {
-                    case BarType.White:
+                    case BarType.Normal:
                         
                         if( _code != KeyCode.E)
-                            BInputManager.GetInst.GetCommand(_code);
+                            BInputManager.GetInst.GetCommand(_code,data.m_skillPropertyName);
 
                         BInputManager.GetInst.GetCombo();
 
                         break;
-                    case BarType.Red:
+                    case BarType.Touchable:
 
                         if( _code != KeyCode.E)
                             BInputManager.GetInst.GetCommand(_code);
@@ -72,7 +71,7 @@ public class BarManager : MonoBehaviour,IManager {
                         BInputManager.GetInst.GetCombo();
                         
                         break;
-                    case BarType.Blue:
+                    case BarType.Untouchable:
 
                         if (_code == KeyCode.E)
                         {
@@ -80,8 +79,8 @@ public class BarManager : MonoBehaviour,IManager {
                         }
                         else
                         {
-                            BInputManager.GetInst.CommandFail();
                             BInputManager.GetInst.ComboFail();
+                            
                         }
                         break;
                 }
@@ -93,7 +92,6 @@ public class BarManager : MonoBehaviour,IManager {
             {
                 // 키 입력했는데 아무것도 없으면 무조건 콤보 실패
                 BInputManager.GetInst.ComboFail();
-                BInputManager.GetInst.CommandFail();
             }
         }
         
@@ -108,22 +106,22 @@ public class BarManager : MonoBehaviour,IManager {
 
                 switch (data.m_type)
                 {
-                    case BarType.White:
+                    case BarType.Normal:
 
                         if (_code != KeyCode.U)
-                            BInputManager.GetInst.GetCommand(_code);
+                            BInputManager.GetInst.GetCommand(_code,data.m_skillPropertyName);
 
                         BInputManager.GetInst.GetCombo();
 
                         break;
-                    case BarType.Red:
+                    case BarType.Touchable:
 
                         if( _code != KeyCode.U)
                             BInputManager.GetInst.GetCommand(_code);
 
                         BInputManager.GetInst.GetCombo();
                         break;
-                    case BarType.Blue:
+                    case BarType.Untouchable:
 
                         if (_code == KeyCode.U)
                         {
@@ -131,7 +129,6 @@ public class BarManager : MonoBehaviour,IManager {
                         }
                         else
                         {
-                            BInputManager.GetInst.CommandFail();
                             BInputManager.GetInst.ComboFail();
                         }
                         break;
@@ -143,11 +140,9 @@ public class BarManager : MonoBehaviour,IManager {
             {
                 // 키 입력했는데 아무것도 없으면 무조건 콤보 실패
                 BInputManager.GetInst.ComboFail();
-                BInputManager.GetInst.CommandFail();
             }
         }
     }
-
     public void BarPassedSensor(Bar _bar)
     {
         // 바 지나감
@@ -155,19 +150,16 @@ public class BarManager : MonoBehaviour,IManager {
 
         switch (data.m_type)
         {
-            case BarType.White:
+            case BarType.Normal:
                 BInputManager.GetInst.ComboFail();
-                BInputManager.GetInst.CommandFail();
 
                 break;
-            case BarType.Red:
+            case BarType.Touchable:
 
 
                 break;
-
-            case BarType.Blue:
+            case BarType.Untouchable:
                 BInputManager.GetInst.ComboFail();
-                BInputManager.GetInst.CommandFail();
                 break;
         }
     }
@@ -226,7 +218,9 @@ public class BarManager : MonoBehaviour,IManager {
 
         BarData data = m_model.GetDisabledBarData();
 
-        data.Activate(BarDir.Right);
+        BarType ranType = (BarType)UnityEngine.Random.Range(0, 3);
+
+        data.Activate(ranType,BarDir.Right);
 
         m_view.ActivateBar(data);
     }
@@ -236,7 +230,10 @@ public class BarManager : MonoBehaviour,IManager {
 
         BarData data = m_model.GetDisabledBarData();
 
-        data.Activate(BarDir.Left);
+        BarType ranType = (BarType)UnityEngine.Random.Range(0, 3);
+
+
+        data.Activate(ranType,BarDir.Left);
 
         m_view.ActivateBar(data);
     }

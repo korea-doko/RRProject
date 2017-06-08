@@ -26,24 +26,36 @@ public class BMonsterManager : MonoBehaviour,IManager {
         m_view = Utils.MakeObjectWithComponent<BMonsterView>("BMonsterView", this.gameObject);
         m_view.Init(m_model);
     }
-
     public void StartMgr()
     {
 
     }
-
     public void UpdateMgr()
     {
         m_view.UpdateView(m_model);
     }
+
     public void SceneChanged()
     {
-        int count = PlayToBattleDataPassManager.GetInst.m_monDataList.Count;
+        MonsterData[] monAry = DataPassManager.GetInst.m_playToBattleSt.m_monsterDataAry;
+        int count = monAry.Length;
 
         for(int i = 0; i < count;i++)
         {
             BMonsterData bData = m_model.GetEnableData();
-            bData.SetData(PlayToBattleDataPassManager.GetInst.m_monDataList[i]);
+            MonsterData monData = monAry[i];
+            bData.SetData(monData);
+        }
+    }
+
+    public void MonsterGetDamage(int _damage)
+    {
+        m_model.GetDamage(_damage);
+        
+        if( m_model.GetMonsterHP() < 1)
+        {
+            // 전투 끝, 플레이 씬으로 돌아가야 한다.
+            BattleManager.GetInst.BattleIsOver(true);
         }
     }
 }

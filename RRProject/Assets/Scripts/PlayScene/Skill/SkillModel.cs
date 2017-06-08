@@ -68,7 +68,6 @@ public class SkillModel : MonoBehaviour
             SkillData skill = new SkillData("Skill Name" + i.ToString(), code);
             m_skillDataList.Add(skill);
         }
-
     }
     void InitSkillItemDataList()
     {

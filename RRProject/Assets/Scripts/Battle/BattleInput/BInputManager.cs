@@ -70,17 +70,24 @@ public class BInputManager : MonoBehaviour ,IManager
     {
         m_model.ComboFail();
         m_view.ComboFail(m_model);
+
+        CommandFail();
     }
-    public void GetCommand(KeyCode _code)
+    public void GetCommand(KeyCode _code,SkillPropertyName _name = SkillPropertyName.None)
     {
+        BPlayerManager.GetInst.GetCommand(_code, _name);
         m_view.GetCommand(_code);
     }
-    public void CommandFail()
-    {
-        m_view.CommandFail();
-    }
 
+   
     public void SceneChanged()
     {
     }
+
+    void CommandFail()
+    {
+        BPlayerManager.GetInst.CommandFail();
+        m_view.CommandFail();
+    }
+
 }
