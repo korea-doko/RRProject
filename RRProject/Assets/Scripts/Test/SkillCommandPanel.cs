@@ -10,9 +10,9 @@ public class SkillCommandPanel : MonoBehaviour
     //public void Init(Skill _skill)
     //{
     //    string str = _skill.m_name + "\n";
-    //    for(int i = 0; i < _skill.m_comboList.Count;i++)
+    //    for(int i = 0; i < _skill.m_commandList.Count;i++)
     //    {
-    //        KeyCode c = _skill.m_comboList[i];
+    //        KeyCode c = _skill.m_commandList[i];
     //        str += c.ToString() + " ";
     //    }
     //    m_text.text = str;

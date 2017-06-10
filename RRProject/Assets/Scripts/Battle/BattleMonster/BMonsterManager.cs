@@ -37,6 +37,8 @@ public class BMonsterManager : MonoBehaviour,IManager {
 
     public void SceneChanged()
     {
+        m_model.SceneChanged();
+
         MonsterData[] monAry = DataPassManager.GetInst.m_playToBattleSt.m_monsterDataAry;
         int count = monAry.Length;
 
@@ -46,6 +48,8 @@ public class BMonsterManager : MonoBehaviour,IManager {
             MonsterData monData = monAry[i];
             bData.SetData(monData);
         }
+
+        m_model.m_isModelChanged = true;
     }
 
     public void MonsterGetDamage(int _damage)

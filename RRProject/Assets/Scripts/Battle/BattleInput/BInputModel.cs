@@ -24,4 +24,10 @@ public class BInputModel : MonoBehaviour {
 
         m_curComboCount = 0;
     }
+
+    public void Clear()
+    {
+        m_maxComboCount = 0;
+        m_curComboCount = 0;
+    }
 }

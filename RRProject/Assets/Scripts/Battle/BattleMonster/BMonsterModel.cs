@@ -60,4 +60,11 @@ public class BMonsterModel : MonoBehaviour {
         // 일단 그냥 0번 놈의 데이터가져다가 쓰자
         return m_bMonsterDataList[0].m_hp;
     }
+
+    public void SceneChanged()
+    {
+        for (int i = 0; i < m_bMonsterDataList.Count; i++)
+            m_bMonsterDataList[i].Clear();
+
+    }
 }

@@ -23,7 +23,7 @@ public class BarData
     {
         m_id = _id;
         m_isActive = false;
-        m_speed = 200.0f;
+        m_speed = 300.0f;
         m_type = BarType.Normal;
         m_skillPropertyName = SkillPropertyName.None;
     }
@@ -47,5 +47,13 @@ public class BarData
         {
             m_skillPropertyName = (SkillPropertyName)UnityEngine.Random.Range(0, 3);
         }
+    }
+
+    public void Clear()
+    {
+        m_isActive = false;
+        m_speed = 300.0f;
+        m_type = BarType.Normal;
+        m_skillPropertyName = SkillPropertyName.None;
     }
 }

@@ -189,4 +189,18 @@ public class BarView : MonoBehaviour, IView<BarModel>
         }
     }
 
+    public void SceneChanged()
+    {
+        for(int i = 0; i < m_rightBarList.Count;i++)
+            m_rightBarList[i].Disable();
+        m_rightBarList.Clear();
+
+        for (int i = 0; i < m_leftBarList.Count; i++)
+            m_leftBarList[i].Disable();
+
+        m_leftBarList.Clear();
+
+        for (int i = 0; i < m_barPoolingList.Count; i++)
+            m_barPoolingList[i].m_isActive = false;
+    }
 }

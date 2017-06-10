@@ -82,11 +82,12 @@ public class BInputManager : MonoBehaviour ,IManager
    
     public void SceneChanged()
     {
+        m_model.Clear();
+        m_view.Clear();
     }
 
     void CommandFail()
     {
-        BPlayerManager.GetInst.CommandFail();
         m_view.CommandFail();
     }
 

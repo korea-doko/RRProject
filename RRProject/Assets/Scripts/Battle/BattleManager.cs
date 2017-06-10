@@ -11,7 +11,8 @@ public enum BattleSceneManagerName
     BMonster,
     BPlayer,
     BInput,
-    Bar
+    Bar,
+    BSkill
 }
 public class BattleManager : MonoBehaviour ,IManager{
 

@@ -50,7 +50,7 @@ public class MonsterModel : MonoBehaviour
         for (int i = 0; i < m_numOfMon; i++)
         {
             TileData data = MapManager.GetInst.GetValidRandomTileData();
-            int ranHP = UnityEngine.Random.Range(10, 20);
+            int ranHP = UnityEngine.Random.Range(3, 8);
             m_monsterDataList.Add(new MonsterData(i,data.m_xIndex, data.m_yIndex,ranHP));
         }
     }

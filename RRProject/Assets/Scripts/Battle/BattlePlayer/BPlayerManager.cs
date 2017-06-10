@@ -31,38 +31,55 @@ public class BPlayerManager : MonoBehaviour ,IManager{
     {
 
     }
-
     public void UpdateMgr()
     {
         m_view.UpdateView(m_model);
     }
     public void SceneChanged()
     {
-        PlayerData data = DataPassManager.GetInst.m_playToBattleSt.m_playerData;
-        m_model.m_playerData.SetData(data);
+
+        m_model.Clear();
+
+        PlayerData pd= DataPassManager.GetInst.m_playToBattleSt.m_playerData;
+
+        BPlayerData bpd = m_model.m_playerData;
+
+        bpd.m_hp = pd.HP;
+
+        for (int i = 0; i < pd.SkillDataList.Count; i++)
+        {
+            SkillData skd = pd.SkillDataList[i];
+
+            BSkillData bs = BSkillManager.GetInst.GetAvailableBSkillData();
+            bs.Init(skd);
+
+            m_model.AddBSkillToBPlayerData(bs);
+        }
+
+        // 데이터 변경 및 초기화 끝
+
+
+        m_view.SceneChanged(m_model);
     }
 
     public void GetCommand(KeyCode _code , SkillPropertyName _name)
     {
-        for (int i = 0; i < m_model.m_playerData.m_skillDataList.Count; i++)
-        {
-            SkillData sd = m_model.m_playerData.m_skillDataList[i];
+        List<BSkillData> bsl = m_model.m_playerData.m_bSkillDataList;
+        int count = bsl.Count;
 
-            if (sd.CheckCombo(_code, _name))
-            {
-                // 여기 있다는 것은 스킬이 나가야 한다는 것                
-                //sd.Cast();
-                BMonsterManager.GetInst.MonsterGetDamage(7);
-            }
-            
-        }
-    }
-    public void CommandFail()
-    {
-        for (int i = 0; i < m_model.m_playerData.m_skillDataList.Count; i++)
+        for (int i = 0; i < count; i++)
         {
-            SkillData sd = m_model.m_playerData.m_skillDataList[i];
-            sd.ClearCombo();
+            BSkillData bsd = bsl[i];
+
+            bsd.GetInput(_code,_name);
+
+            if( bsd.CommandCheck())
+            {
+                // 커맨드 일치, 기술 나가야함
+                Debug.Log("입력완성");
+                BMonsterManager.GetInst.MonsterGetDamage(7);
+
+            }
         }
-    }
+    }  
 }

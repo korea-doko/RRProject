@@ -34,4 +34,9 @@ public class BInputView : MonoBehaviour
         m_commandText.text = "Command = ";             
     }
     
+    public void Clear()
+    {
+        m_commandText.text = "Command = ";
+        m_comboText.text = "Combo / MaxCombo = ";
+    }
 }

@@ -20,11 +20,13 @@ public enum BarSpriteName
 }
 public class BarModel : MonoBehaviour
 {
+
+
     public List<BarData> m_barDataList;
+
+
     public SensorData[] m_sensorDataAry;
-
     public List<Sprite> m_barSpriteList;
-
     int m_numOfBarData;
 
     public void Init()
@@ -85,5 +87,14 @@ public class BarModel : MonoBehaviour
     public Sprite GetBarSprite(BarSpriteName _barName)
     {
         return m_barSpriteList[(int)_barName];
+    }
+
+    public void SceneChanged()
+    {
+        for(int i = 0; i < m_barDataList.Count;i++)
+        {
+            BarData d = m_barDataList[i];
+            d.Clear();
+        }
     }
 }

@@ -36,7 +36,7 @@ public class SkillModel : MonoBehaviour
 
         for (int i = 0; i < 8; i++)
         {
-            int numOfCombo = Random.Range(3, 5);
+            int numOfCombo = Random.Range(2,4 );
             KeyCode[] code = new KeyCode[numOfCombo];
 
             for (int k = 0; k < numOfCombo; k++)

@@ -27,10 +27,10 @@ public class BarManager : MonoBehaviour,IManager {
    
     public void AwakeMgr()
     {
-        m_rightBarInterval = 2.0f;
+        m_rightBarInterval = 1.5f;
         m_rightBarPassedTime = 0.0f;
         
-        m_leftBarInterval = 3.0f;
+        m_leftBarInterval = 1.5f;
         m_leftBarPassedTime = 0.0f;
         
         m_model = Utils.MakeObjectWithComponent<BarModel>("BarModel", this.gameObject);
@@ -79,8 +79,7 @@ public class BarManager : MonoBehaviour,IManager {
                         }
                         else
                         {
-                            BInputManager.GetInst.ComboFail();
-                            
+                            BInputManager.GetInst.ComboFail();                            
                         }
                         break;
                 }
@@ -184,9 +183,11 @@ public class BarManager : MonoBehaviour,IManager {
 
         m_view.UpdateView(m_model);
     }
+
     public void SceneChanged()
     {
-
+        m_model.SceneChanged();
+        m_view.SceneChanged();
     }
     
     Bar CheckValidRightInput()

@@ -5,25 +5,19 @@ using UnityEngine;
 [System.Serializable]
 public class BPlayerData
 {
-    public bool m_isInit;
     public int m_hp;
-    public List<SkillData> m_skillDataList;
+    public List<BSkillData> m_bSkillDataList;
 
     public BPlayerData()
     {
-        m_skillDataList = new List<SkillData>();
-        m_isInit = false;
-        m_hp = -1;
-    }
-    public void SetData(PlayerData _data)
-    {
-        m_isInit = true;
-        m_hp = _data.HP;
-        m_skillDataList = _data.SkillDataList;
-    }
+        m_bSkillDataList = new List<BSkillData>();
 
+        m_hp = -1;
+
+    }
     public void Clear()
     {
-        m_isInit = false;
+        for (int i = 0; i < m_bSkillDataList.Count; i++)
+            m_bSkillDataList[i].Clear();
     }
 }
