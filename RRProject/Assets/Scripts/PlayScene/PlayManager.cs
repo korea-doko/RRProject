@@ -10,8 +10,9 @@ public enum PlaySceneManagerName
     PlayInput,
     Camera,
     Skill,
+    Turn,
+    FOW,
     Monster,
-    Turn
 }
 
 public class PlayManager : MonoBehaviour,IManager{

@@ -18,6 +18,8 @@ public class MonsterData
     int m_hp;
     [SerializeField]
     bool m_isDead;
+    [SerializeField]
+    bool m_isSeen;
 
 
     public MonsterData(int _id,int _xIndex,int _yIndex, int _hp)
@@ -25,6 +27,7 @@ public class MonsterData
         m_id = _id;
         m_hp = _hp;
         m_isDead = false;
+        m_isSeen = false;
         ChangePosIndex(_xIndex, _yIndex);
     }
 
@@ -59,12 +62,22 @@ public class MonsterData
     {
         get { return !m_isDead; }
     }
-
+    public bool IsSeen
+    {
+        get { return m_isSeen; }
+        set { m_isSeen = value; }                                      
+    }
     public void ChangePosIndex(int _xIndex, int _yIndex)
     {
         m_xIndex = _xIndex;
         m_yIndex = _yIndex;
 
         m_parentTileData = MapManager.GetInst.GetTileData(m_xIndex, m_yIndex);
+
+        if (FOWManager.GetInst.m_model.m_fowTileDataAry[m_xIndex][m_yIndex].m_state == FOWTileState.Visiting)
+            IsSeen = true;
+        else
+            IsSeen = false;
+        
     }
 }

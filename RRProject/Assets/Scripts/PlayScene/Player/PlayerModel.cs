@@ -35,8 +35,7 @@ public class PlayerModel : MonoBehaviour
     {
         get { return m_playerData.yIndex; }
     }
-    
-    
+        
     void LoadSprite()
     {
         m_playerSpriteList = new List<Sprite>();

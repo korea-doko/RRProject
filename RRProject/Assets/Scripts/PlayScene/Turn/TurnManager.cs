@@ -21,6 +21,10 @@ public class TurnManager : MonoBehaviour,IManager {
     public void NextTurn()
     {
         PlayerManager.GetInst.NextTurn();
+
+        FOWManager.GetInst.NextTurn();
+
+
         MonsterManager.GetInst.NextTurn();
     }
     public void AwakeMgr()

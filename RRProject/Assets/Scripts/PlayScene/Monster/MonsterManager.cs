@@ -100,15 +100,15 @@ public class MonsterManager : MonoBehaviour,IManager {
 
     public void AwakeMgr()
     {
+      
+    }
+    public void StartMgr()
+    {
         m_model = Utils.MakeObjectWithComponent<MonsterModel>("MonsterModel", this.gameObject);
         m_model.Init();
 
         m_view = Utils.MakeObjectWithComponent<MonsterView>("MonsterView", this.gameObject);
         m_view.Init(m_model);
-    }
-    public void StartMgr()
-    {
-
     }
     public void UpdateMgr()
     {

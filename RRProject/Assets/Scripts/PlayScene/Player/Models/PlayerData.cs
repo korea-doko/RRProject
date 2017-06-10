@@ -15,6 +15,12 @@ public class PlayerData
     int m_hp;
     [SerializeField]
     List<SkillData> m_skillDataList;
+    [SerializeField]
+    int m_sight;
+    [SerializeField]
+    int m_prevXindex;
+    [SerializeField]
+    int m_prevYIndex;
 
 
     public PlayerData(int _xIndex, int _yIndex)
@@ -25,7 +31,11 @@ public class PlayerData
         m_yIndex = _yIndex;
         m_parentTileData = MapManager.GetInst.GetTileData(m_xIndex, m_yIndex);
 
+        m_prevXindex = -1;
+        m_prevYIndex = -1;
+
         m_hp = 10;
+        m_sight = 4;
     }
     public int HP
     {
@@ -40,12 +50,27 @@ public class PlayerData
     {
         get { return m_yIndex; }
     }
+    public int prevXIndex
+    {
+        get { return m_prevXindex; }
+    }
+    public int prevYIndex
+    {
+        get { return m_prevYIndex; }
+    }
+    public int Sight
+    {
+        get { return m_sight; }
+    }
     public TileData ParentTileData
     {
         get { return m_parentTileData; }
     }
     public void ChangePosIndex(int _xIndex, int _yIndex)
     {
+        m_prevXindex = m_xIndex;
+        m_prevYIndex = m_yIndex;
+
         m_xIndex = _xIndex;
         m_yIndex = _yIndex;
 

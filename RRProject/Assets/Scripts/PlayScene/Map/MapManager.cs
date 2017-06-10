@@ -14,6 +14,7 @@ public class MapManager : MonoBehaviour,IManager {
     {
         m_inst = this;
     }
+
     public MapModel m_model;
     public MapView m_view;
 

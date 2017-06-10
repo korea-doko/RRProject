@@ -48,6 +48,11 @@ public class MonsterView : MonoBehaviour,IView<MonsterModel> {
 
             if (!data.IsAlive)
                 mon.Disable();
+
+            if (data.IsSeen)
+                mon.Enable();
+            else
+                mon.Disable();
         }
     }
 }
