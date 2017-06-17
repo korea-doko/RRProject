@@ -11,11 +11,33 @@ public class MapView : MonoBehaviour
     public void Init(MapModel _model)
     {
         InitTile(_model);
+
+        testColoring();
     }
 
     public void UpdateView()
     {
 
+    }
+
+    
+    public void RegenMap(MapModel _model)
+    {
+        for (int y = _model.m_mapHeight - 1; y > -1; y--)
+        {
+            for (int x = 0; x < _model.m_mapWidth; x++)
+            {
+                TileData data = _model.m_tileDataAry[x][y];
+
+                if (data.m_isObs)
+                    m_tileAry[x][y].ChangeSprite(_model.GetTileSprite(TileSpriteType.Obstacle));
+                else
+                    m_tileAry[x][y].ChangeSprite(_model.GetTileSprite(TileSpriteType.Normal));
+
+            }
+        }
+
+        testColoring();
     }
 
     void InitTile(MapModel _model)
@@ -29,7 +51,7 @@ public class MapView : MonoBehaviour
             m_tileAry[i] = new Tile[_model.m_mapHeight];
 
         for (int y = _model.m_mapHeight - 1; y > -1; y--)
-        {        
+        {
             for (int x = 0; x < _model.m_mapWidth; x++)
             {
                 TileData data = _model.m_tileDataAry[x][y];
@@ -44,4 +66,53 @@ public class MapView : MonoBehaviour
             }
         }
     }
+
+    void testColoring()
+    {
+        //클리어
+        Color clearCol = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        Color edgeColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
+
+
+        for(int y = 0; y < MapManager.GetInst.m_model.m_mapHeight; y++  )
+        {
+            for (int x = 0; x < MapManager.GetInst.m_model.m_mapWidth; x++)
+            {
+                m_tileAry[x][y].m_ren.color = clearCol;
+            }
+        }
+
+        for(int i = 0; i < MapManager.GetInst.m_model.m_roomList.Count;i++)
+        {
+            Room r = MapManager.GetInst.m_model.m_roomList[i];
+            Color color = new Color
+                (
+                UnityEngine.Random.Range(0.0f, 1.0f),
+                UnityEngine.Random.Range(0.0f, 1.0f),
+                UnityEngine.Random.Range(0.0f, 1.0f),
+                1.0f
+                );
+
+            for(int k = 0; k < r.m_tileList.Count;k++)
+            {
+                int x = r.m_tileList[k].m_xIndex;
+                int y = r.m_tileList[k].m_yIndex;
+
+                m_tileAry[x][y].m_ren.color = color;
+            }           
+        }
+
+
+        for(int i = 0; i < MapManager.GetInst.m_model.m_testList.Count;i++)
+        {
+            TestViewSt t = MapManager.GetInst.m_model.m_testList[i];
+            
+            m_tileAry[t.m_sx][t.m_sy].m_ren.color = edgeColor;
+            m_tileAry[t.m_ex][t.m_ey].m_ren.color = edgeColor;
+
+            Debug.DrawLine(m_tileAry[t.m_sx][t.m_sy].transform.position,
+                m_tileAry[t.m_ex][t.m_ey].transform.position, Color.red, 6.0f, false);
+        }
+    }
+   
 }

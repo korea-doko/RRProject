@@ -50,9 +50,19 @@ public class PlayInputManager : MonoBehaviour,IManager {
             GetKeyInput(KeyCode.W);
         else if (Input.GetKeyDown(KeyCode.Space))
             NextTurn();
-
+        else if (Input.GetKeyDown(KeyCode.V))
+            RegenMap();
+        else if (Input.GetKeyDown(KeyCode.B))
+            OnOffFOW();
     }
-
+    void RegenMap()
+    {
+        MapManager.GetInst.RegenMap();
+    }
+    void OnOffFOW()
+    {
+        FOWManager.GetInst.OnOffFOW();
+    }
     void GetKeyInput(KeyCode _code)
     {
         int x = m_model.GetCursorXIndex;

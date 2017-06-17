@@ -82,4 +82,11 @@ public class MapManager : MonoBehaviour,IManager {
     {
 
     }
+
+
+    public void RegenMap()
+    {
+        m_model.RegenMap();
+        m_view.RegenMap(m_model);
+    }
 }

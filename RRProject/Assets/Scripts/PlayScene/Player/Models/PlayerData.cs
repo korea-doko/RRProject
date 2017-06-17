@@ -35,7 +35,7 @@ public class PlayerData
         m_prevYIndex = -1;
 
         m_hp = 10;
-        m_sight = 4;
+        m_sight = 3;
     }
     public int HP
     {
