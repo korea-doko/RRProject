@@ -21,6 +21,27 @@ public enum TileSpriteType
 }
 
 
+public class Passage
+{
+    public List<RandomMapGenerateData> m_passageTileList;
+
+    public int m_startX;
+    public int m_startY;
+
+    public int m_endX;
+    public int m_endY;
+    
+    public Passage(int _sx,int _sy, int _ex,int _ey)
+    {
+        m_passageTileList = new List<RandomMapGenerateData>();
+
+        m_startX = _sx;
+        m_startY = _sy;
+
+        m_endX = _ex;
+        m_endY = _ey;
+    }
+}
 [System.Serializable]
 public class Room 
 {
@@ -76,7 +97,7 @@ public class Room
 
         _room.LinkRoom(this);
     }
-
+   
     public void SetConnectedToMain()
     {
         m_isConnectedToMainRoom = true;
@@ -156,24 +177,6 @@ public struct Coord2DSt
 }
 
 
-public struct TestViewSt
-{
-    public int m_sx;
-    public int m_sy;
-
-    public int m_ex;
-    public int m_ey;
-
-    public TestViewSt(int _sx, int _sy, int _ex, int _ey)
-    {
-        m_ex = _ex;
-        m_ey = _ey;
-
-        m_sx = _sx;
-        m_sy = _sy;
-    }
-}
-
 public class MapModel : MonoBehaviour {
 
     public List<Sprite> m_tileSpriteList;
@@ -181,6 +184,8 @@ public class MapModel : MonoBehaviour {
     public TileData[][] m_tileDataAry;
 
     public List<Room> m_roomList;
+    public List<Passage> m_passageList;
+
     // 방 담아야함
     
     public int m_mapWidth;          // 맵 전체 가로 크기
@@ -195,15 +200,10 @@ public class MapModel : MonoBehaviour {
     public RandomMapGenerateData[][] m_genData;
     public int m_deletRoomSize;
     public Coord2DSt[] m_tileDirOffSet;
-
-    /// <summary>
-    /// 테스트
-    /// </summary>
-    public List<TestViewSt> m_testList;
+    
 
     public void Init()
     {
-        m_testList = new List<TestViewSt>(); 
 
         LoadSprite();
         InitVariables();
@@ -229,15 +229,16 @@ public class MapModel : MonoBehaviour {
     {
         Clear();
 
-        InitTileData();
-        SmoothingTileData();
-        DetectingRoomsInTileDatas();
-        DeleteSmallSizeRooms();
-        SetMainRoom();
-        
-        FindEdgeTileInRooms();
-        FindClosestRooms();
-        CheckConnectivity();
+        InitTileData();                     // Cellular Automata 를 이용해서 만들어진 RandomMapGeneratorData의 맵
+        SmoothingTileData();                // 만들어진 RandomMapGeneratorData를 사용가능하게 여러 번 부드럽게 만든다.
+        DetectingRoomsInTileDatas();        // 만들어진 맵에서 방을 찾아낸다. 방이라고 하는 것은 다른 곳과 떨어진 독립된 덩어리
+        DeleteSmallSizeRooms();             // 너무 작은 사이즈의 맵은 삭제한다.
+        SetMainRoom();                      // 남은 방 중에서 메인 룸을 만든다. 이것은 현재 가장 큰 사이즈를 가진 방이 된다.
+        FindEdgeTileInRooms();              // 모든 방의 엣지타일을 만든다. 엣지타일의 경우 방의 벽이 될 부분.
+        FindClosestRooms();                 // 가장 가까운 방을 연결시킨다.
+        CheckConnectivity();                // 모든 방이 연결이 되었는지 확인한다.
+        GetPassageTiles();                  // 통로가 될 데이터 타일들을 가져온다.
+        MakePassage();                      // 통로를 만든다.
 
         // 실제 맵 생성
         InitMap();
@@ -312,6 +313,8 @@ public class MapModel : MonoBehaviour {
             }
         }
         // 방향에 대해서 사용할 것 만들어 놨음..
+
+        m_passageList = new List<Passage>();
     }
     void InitTileData()
     {                    
@@ -543,43 +546,56 @@ public class MapModel : MonoBehaviour {
             
             if (baseRoom.m_isConnectedToMainRoom && !baseRoom.m_isMainRoom) 
                   continue;
-                        
-            RandomMapGenerateData tileInBase = null;       
-            // 베이스 타일에서 가장 가까운 타일
-            RandomMapGenerateData tileInShort =null;
-            // 검색된 가장 가까운 방에서 베이스 타일에 가장 가까운 타일
-
-            Room ShortestRoom = GetShortestRoom(baseRoom,out tileInBase, out tileInShort);
-            // tileInBase / tielInShort에 값을 할당
-
-            if (ShortestRoom.m_id != baseRoom.m_id)
-            {
-
-
-                m_testList.Add(new TestViewSt(tileInBase.m_xIndex, tileInBase.m_yIndex,
-                tileInShort.m_xIndex, tileInShort.m_yIndex));
-           
-
-
-                baseRoom.LinkRoom(ShortestRoom);
-            }
-        }
-
-        Debug.Log("통로 숫자  ="+ m_testList.Count.ToString());
             
+            Room ShortestRoom = GetShortestRoom(baseRoom);
+
+            if (ShortestRoom == null)
+                Debug.Log(" 발생 불가능 ");
+
+            // 전체 알고리즘
+            //
+            // 가장 최단 거리의 방을 찾았는데, 혹시 그 방이 baseRoom에 연결된 친구가 더 가깝다면,
+            // 그 친구와 가장 짧은 거리의 방을 연결시켜주자.
+            // 그런데 이미 새로운 친구가 그 짧은 거리의 방과 연결되어 있다면 
+            // 더 이상 하지 않는다.
+
+            Room shortestLinkedRoom = GetShortestLinkedRoom(baseRoom, ShortestRoom);
+
+            if( shortestLinkedRoom != null)
+            {
+                // 아니라는 것은 더 짧은 길이의 방이 존재한다.
+                // 그렇다면 이 방이 이미 연결이 되었는지 확인한다.
+
+                // 만약에 연결이 되어있으면 해당 방은 더이상하지 않는다.
+                if ( shortestLinkedRoom.CheckAlreadyLinkedRoom(ShortestRoom) )
+                    continue;
+
+                // 만약에 여기라면 합쳐햐나는 baseRoom을 더 가까이 있는 ShortestRoom으로 교체한다.
+                baseRoom = shortestLinkedRoom;
+            }
+
+
+
+            RandomMapGenerateData baseTile = null;
+            RandomMapGenerateData shortTile = null;
+
+            GetShortestPathPointTilesBetweenRooms(baseRoom, ShortestRoom, out baseTile, out shortTile);
+
+            m_passageList.Add(new Passage(baseTile.m_xIndex, baseTile.m_yIndex,
+                shortTile.m_xIndex, shortTile.m_yIndex));            
+            // 통로를 집어넣는다.
+
+            baseRoom.LinkRoom(ShortestRoom);                            
+        }        
     }
-    Room GetShortestRoom(Room _baseRoom,out RandomMapGenerateData _baseTile,
-        out RandomMapGenerateData _shortTile)
+
+    // 최단거리의 방을 가져오기
+    Room GetShortestRoom(Room _baseRoom)
     {
-        Room shortestRoom = _baseRoom;
+        Room shortestRoom = null;
         float shortestRoomDis = float.MaxValue;
-
-        _baseTile = null;
-        _shortTile = null;
-
-        RandomMapGenerateData baseTileData = null;
-        RandomMapGenerateData shortTileData = null;
-
+        
+        
         for (int k = 0; k < m_roomList.Count; k++)
         {
             Room checkRoom = m_roomList[k];
@@ -589,22 +605,49 @@ public class MapModel : MonoBehaviour {
 
             if (_baseRoom.CheckAlreadyLinkedRoom(checkRoom))
                 continue;
-            
-            float shortestDisBetweenRoom = GetShortestDisBetweenRooms(_baseRoom, checkRoom,
-                out baseTileData,out shortTileData);
+
+            float shortestDisBetweenRoom = GetShortestDistanceBetweenRooms(_baseRoom, checkRoom);
 
             if (shortestDisBetweenRoom <= shortestRoomDis)
             {
                 shortestRoom = checkRoom;
                 shortestRoomDis = shortestDisBetweenRoom;
-                _baseTile = baseTileData;
-                _shortTile = shortTileData;
             }
         }
 
         return shortestRoom;
     }
-    float GetShortestDisBetweenRooms(Room _baseRoom, Room _targetRoom,
+   
+    // 연결된 방에서 타겟까지 더 가까운 방이 있냐?
+    Room GetShortestLinkedRoom(Room _base ,Room _target)
+    {
+
+        Room shortestRoom = null;
+
+
+        if (_base.m_linkedRoomList.Count == 0)
+            return null;
+
+        float shortestDis = GetShortestDistanceBetweenRooms(_base, _target);
+
+        for(int i = 0; i < _base.m_linkedRoomList.Count;i++)
+        {
+            Room linkedRoom = _base.m_linkedRoomList[i];
+
+            float dis = GetShortestDistanceBetweenRooms(linkedRoom, _target);
+
+            if( dis < shortestDis)
+            {
+                shortestRoom = linkedRoom;
+                shortestDis = dis;
+            }
+        }
+
+        return shortestRoom;
+    }
+
+    // 방 사이에 최단거리 타일들 구하기
+    void GetShortestPathPointTilesBetweenRooms(Room _baseRoom, Room _targetRoom,
         out RandomMapGenerateData _baseTile, out RandomMapGenerateData _shortTile)
     {
         List<RandomMapGenerateData> baseEdgeList = _baseRoom.m_edgeTileList;
@@ -635,10 +678,39 @@ public class MapModel : MonoBehaviour {
                     _shortTile = celd;
                 }
             }
+        }        
+    }
+
+    // 방 사이 최단거리 구하기
+    float GetShortestDistanceBetweenRooms(Room _baseRoom, Room _targetRoom)
+    {
+        List<RandomMapGenerateData> baseEdgeList = _baseRoom.m_edgeTileList;
+        List<RandomMapGenerateData> checkEdgeList = _targetRoom.m_edgeTileList;
+        
+        float shortestTileDis = float.MaxValue;
+
+        for (int bel = 0; bel < baseEdgeList.Count; bel++)
+        {
+            RandomMapGenerateData beld = baseEdgeList[bel];
+
+            for (int cel = 0; cel < checkEdgeList.Count; cel++)
+            {
+                RandomMapGenerateData celd = checkEdgeList[cel];
+
+                float disX = beld.m_xIndex - celd.m_xIndex;
+                float disY = beld.m_yIndex - celd.m_yIndex;
+
+                float tileDis = disX * disX + disY * disY;
+
+                if (tileDis <= shortestTileDis)
+                    shortestTileDis = tileDis;
+
+            }
         }
 
         return shortestTileDis;
     }
+
     void CheckConnectivity()
     {
         bool isConnectedAll = true;
@@ -657,6 +729,113 @@ public class MapModel : MonoBehaviour {
         }
     }
 
+    void GetPassageTiles()
+    {
+        for(int i = 0; i < m_passageList.Count;i++)
+        {
+            Passage p = m_passageList[i];
+
+            int sX = p.m_startX;
+            int sY = p.m_startY;
+            int eX = p.m_endX;
+            int eY = p.m_endY;
+
+            if( sX > eX)
+            {
+                sX = p.m_endX;
+                sY = p.m_endY;
+                eX = p.m_startX;
+                eY = p.m_startY;
+            }
+
+            
+            if( eX == sX && eY == sY)
+            {
+                // 통로가 1개의 타일로 연결된 경우.
+
+                RandomMapGenerateData data = m_genData[sX][sY];
+                p.m_passageTileList.Add(data);
+
+                continue;
+            }
+
+            if (eX == sX && eY != sY)
+            {
+                // 통로가 수직
+
+                int startY = eY < sY ? eY : sY;
+                int endY = eY < sY ? sY : eY;
+
+                for(int y = startY; y <= endY; y++)
+                {
+                    RandomMapGenerateData data = m_genData[eX][y];
+                    p.m_passageTileList.Add(data);
+                }
+
+                continue;
+            }
+
+            int pivotY = sY;
+
+            float coe = (float)(eY - sY) / (float)(eX - sX);
+            
+            for ( int x = sX ; x <= eX ; x++)
+            {
+                float fv = coe * (float)(x - sX) + (float)(sY);
+                int quotient = (int)fv;
+                
+                int xIndex = x;
+                int yIndex = pivotY;
+
+
+                RandomMapGenerateData data =  m_genData[xIndex][yIndex];
+                p.m_passageTileList.Add(data);
+
+                if( pivotY != quotient)
+                {
+                    int difQuotient = quotient - pivotY;
+
+                    if( difQuotient < 0)
+                    {
+                        for (int offset = difQuotient; offset < 0; offset++)
+                        {
+                            data = m_genData[xIndex][yIndex + offset];
+                            p.m_passageTileList.Add(data);
+                        }
+                    }
+                    else
+                    {
+                        for (int offset = difQuotient; offset > 0; offset--)
+                        {
+                            data = m_genData[xIndex][yIndex + offset];
+                            p.m_passageTileList.Add(data);
+                        }                      
+                    }
+                    pivotY += difQuotient;
+                }
+            }
+        }
+
+
+    }
+
+    void MakePassage()
+    {
+        for(int i = 0; i < m_passageList.Count; i++)
+        {
+
+            Passage p = m_passageList[i];
+
+            for(int k = 0; k < p .m_passageTileList.Count ; k++)
+            {
+
+                RandomMapGenerateData data = p.m_passageTileList[k];
+                data.m_isWall = false;
+
+            }
+        }
+    }
+
     void Clear()
     {
         for (int y = 0; y < m_mapHeight; y++)
@@ -667,8 +846,7 @@ public class MapModel : MonoBehaviour {
             m_roomList[i].Clear();
 
         m_roomList.Clear();
-
-        m_testList.Clear();
+        m_passageList.Clear();
     }
     void InitMap()
     {

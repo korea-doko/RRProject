@@ -103,15 +103,15 @@ public class MapView : MonoBehaviour
         }
 
 
-        for(int i = 0; i < MapManager.GetInst.m_model.m_testList.Count;i++)
+        for(int i = 0; i < MapManager.GetInst.m_model.m_passageList.Count;i++)
         {
-            TestViewSt t = MapManager.GetInst.m_model.m_testList[i];
-            
-            m_tileAry[t.m_sx][t.m_sy].m_ren.color = edgeColor;
-            m_tileAry[t.m_ex][t.m_ey].m_ren.color = edgeColor;
+            Passage passage = MapManager.GetInst.m_model.m_passageList[i];
 
-            Debug.DrawLine(m_tileAry[t.m_sx][t.m_sy].transform.position,
-                m_tileAry[t.m_ex][t.m_ey].transform.position, Color.red, 6.0f, false);
+            //m_tileAry[passage.m_startX][passage.m_startY].m_ren.color = edgeColor;
+            //m_tileAry[passage.m_endX][passage.m_endY].m_ren.color = edgeColor;
+
+            Debug.DrawLine(m_tileAry[passage.m_startX][passage.m_startY].transform.position,
+                m_tileAry[passage.m_endX][passage.m_endY].transform.position, Color.red, 6.0f, false);
         }
     }
    
