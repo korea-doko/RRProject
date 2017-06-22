@@ -8,11 +8,12 @@ public enum PlaySceneManagerName
     Map,
     Player,
     PlayInput,
-    Camera,
-    Skill,
+    Camera,   
     Turn,
     FOW,
     Monster,
+    Item,
+    UI
 }
 
 public class PlayManager : MonoBehaviour,IManager{

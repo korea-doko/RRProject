@@ -42,10 +42,8 @@ public class BPlayerManager : MonoBehaviour ,IManager{
 
         PlayerData pd= DataPassManager.GetInst.m_playToBattleSt.m_playerData;
 
-        BPlayerData bpd = m_model.m_playerData;
-
-        bpd.m_hp = pd.HP;
-
+        m_model.m_playerData = pd;
+        
         for (int i = 0; i < pd.SkillDataList.Count; i++)
         {
             SkillData skd = pd.SkillDataList[i];
@@ -62,9 +60,10 @@ public class BPlayerManager : MonoBehaviour ,IManager{
         m_view.SceneChanged(m_model);
     }
 
+
     public void GetCommand(KeyCode _code , SkillPropertyName _name)
     {
-        List<BSkillData> bsl = m_model.m_playerData.m_bSkillDataList;
+        List<BSkillData> bsl = m_model.m_bSkillDataList;
         int count = bsl.Count;
 
         for (int i = 0; i < count; i++)
@@ -77,9 +76,29 @@ public class BPlayerManager : MonoBehaviour ,IManager{
             {
                 // 커맨드 일치, 기술 나가야함
                 Debug.Log("입력완성");
-                BMonsterManager.GetInst.MonsterGetDamage(7);
+                BMonsterManager.GetInst.DamageToMonster(7);
 
             }
         }
-    }  
+    }
+
+    public void GetHealed(int _heal)
+    {
+        m_model.m_playerData.CurHP += _heal;
+
+        if (m_model.m_playerData.HP < m_model.m_playerData.CurHP)
+            m_model.m_playerData.CurHP = m_model.m_playerData.HP;
+
+        m_model.m_isModelChanged = true;
+    }
+    public void GetDamaged(int _damage)
+    {
+        m_model.m_playerData.CurHP -= _damage;
+
+        if (m_model.m_playerData.CurHP <= 0)
+            Debug.Log("죽음");
+
+        m_model.m_isModelChanged = true;
+    }
+
 }

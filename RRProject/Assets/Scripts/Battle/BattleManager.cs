@@ -12,7 +12,7 @@ public enum BattleSceneManagerName
     BPlayer,
     BInput,
     Bar,
-    BSkill
+    BSkill,
 }
 public class BattleManager : MonoBehaviour ,IManager{
 
@@ -79,12 +79,13 @@ public class BattleManager : MonoBehaviour ,IManager{
 
     public void BattleIsOver(bool _isPlayerWin)
     {
-        List<BMonsterData> bMonList = BMonsterManager.GetInst.m_model.m_bMonsterDataList;
-        BMonsterData[] bMonAry = new BMonsterData[bMonList.Count];
-        for (int i = 0; i < bMonList.Count; i++)
-            bMonAry[i] = bMonList[i];
+        List<MonsterData> monList = BMonsterManager.GetInst.m_model.m_monsterDataList;
+        MonsterData[] monAry = new MonsterData[monList.Count];
 
-        DataPassManager.GetInst.SetBattleToPlayData(_isPlayerWin,bMonAry);
+        for (int i = 0; i < monList.Count; i++)
+            monAry[i] = monList[i];
+
+        DataPassManager.GetInst.SetBattleToPlayData(_isPlayerWin, monAry);
     }
 
     void Awake()

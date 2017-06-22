@@ -17,11 +17,19 @@ public class PlayerManager : MonoBehaviour,IManager{
 
     public PlayerModel m_model;
     public PlayerView m_view;
-    
 
-    
-    
 
+    public void NextTurn()
+    {
+        int destX = PlayInputManager.GetInst.m_model.GetCursorXIndex;
+        int destY = PlayInputManager.GetInst.m_model.GetCursorYIndex;
+
+        PlayerMoveTo(destX, destY);
+    }
+    public void GetItem(ItemData _data)
+    {
+        m_model.GetItem(_data);
+    }
     public void AwakeMgr()
     {
         m_model = Utils.MakeObjectWithComponent<PlayerModel>("PlayerModel", this.gameObject);
@@ -32,24 +40,20 @@ public class PlayerManager : MonoBehaviour,IManager{
     }
     public void StartMgr()
     {
-
-        SkillData skillData = SkillManager.GetInst.m_model.m_skillDataList[0];
+        SkillData skillData = new SkillData(99, "start", 0, "startdesc", new KeyCode[2] { KeyCode.A, KeyCode.K });
         m_model.m_playerData.AddSkillData(skillData);
-
     }
     public void UpdateMgr()
     {
         m_view.UpdateView();
     }
 
-    public void NextTurn()
+  
+   
+    public void SceneChanged()
     {
-        int destX = PlayInputManager.GetInst.m_model.GetCursorXIndex;
-        int destY = PlayInputManager.GetInst.m_model.GetCursorYIndex;
 
-        PlayerMoveTo(destX, destY);
     }
-
     void PlayerMoveTo(int _destX, int _destY)
     {
         m_model.m_playerData.ChangePosIndex(_destX, _destY);
@@ -61,15 +65,12 @@ public class PlayerManager : MonoBehaviour,IManager{
          *  일단 여기서 몬스터가 있는지 검사하고 바로 전투 씬으로 넘기도록 한다. 
          */
 
-       if( MonsterManager.GetInst.CheckMonsterExists(m_model.m_playerData.ParentTileData))
+        if (MonsterManager.GetInst.CheckMonsterExists(m_model.m_playerData.ParentTileData))
             PlayManager.GetInst.PlayerEncountMonster(m_model.m_playerData);
 
-        SkillManager.GetInst.CheckSkillItemExists(m_model.m_playerData.ParentTileData);
-            
+
+        ItemManager.GetInst.CheckItemExists(m_model.m_playerData.ParentTileData);
 
     }
-    public void SceneChanged()
-    {
 
-    }
 }

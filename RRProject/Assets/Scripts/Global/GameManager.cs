@@ -6,7 +6,8 @@ using UnityEngine;
 public enum GlobalManagerName
 {
     MyScene,    
-    DataPass
+    DataPass,
+    Resource
 }
 public class GameManager : MonoBehaviour
 {

@@ -24,7 +24,14 @@ public class MonsterView : MonoBehaviour,IView<MonsterModel> {
             mon.transform.SetParent(this.transform);
 
             mon.Init(_model.m_monsterDataList[i]);
+
+            Sprite sp = _model.GetMonsterSprite((MonsterSpriteType)_model.m_monsterDataList[i].Level);
+            mon.m_ren.sprite = sp;
+
             m_monsterList.Add(mon);
+
+
+
         }
     }
 
@@ -32,7 +39,12 @@ public class MonsterView : MonoBehaviour,IView<MonsterModel> {
     {
         for(int i = 0; i < m_monsterList.Count;i++)
         {
+            
             MonsterData data = _model.m_monsterDataList[i];
+
+            if (data.IsDead)
+                continue;
+
             Monster mon = m_monsterList[i];
 
             mon.SetParentTile(data.ParentTileData);
@@ -41,13 +53,23 @@ public class MonsterView : MonoBehaviour,IView<MonsterModel> {
 
     public void UpdateView(MonsterModel _model)
     {
-        for(int i = 0; i < _model.m_monsterDataList.Count;i++)
+       
+    }
+
+    public void ChangeMonsterState(MonsterModel _model)
+    {
+        for (int i = 0; i < _model.m_monsterDataList.Count; i++)
         {
             MonsterData data = _model.m_monsterDataList[i];
             Monster mon = m_monsterList[i];
 
-            if (!data.IsAlive)
-                mon.Disable();
+            if (data.IsDead)
+            {
+                if (mon.m_isActive)
+                    mon.Disable();
+                
+                continue;
+            }
 
             if (data.IsSeen)
                 mon.Enable();

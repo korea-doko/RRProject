@@ -23,7 +23,7 @@ public class BPlayerView : MonoBehaviour,IView<BPlayerModel>
         if(_model.m_isModelChanged)
         {
             _model.m_isModelChanged = false;
-            m_playerPanel.m_text.text = _model.m_playerData.m_hp.ToString();
+            m_playerPanel.m_text.text = _model.m_playerData.CurHP.ToString();
         }
     }
 
@@ -32,9 +32,9 @@ public class BPlayerView : MonoBehaviour,IView<BPlayerModel>
 
         m_skillPanel.Clear();
 
-        for (int i = 0; i < _model.m_playerData.m_bSkillDataList.Count;i++)
+        for (int i = 0; i < _model.m_bSkillDataList.Count;i++)
         {
-            BSkillData bsd = _model.m_playerData.m_bSkillDataList[i];
+            BSkillData bsd = _model.m_bSkillDataList[i];
             m_skillPanel.Show(bsd.m_skillData);
         }
     }

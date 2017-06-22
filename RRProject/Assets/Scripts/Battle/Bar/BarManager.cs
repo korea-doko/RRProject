@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class BarManager : MonoBehaviour,IManager {
 
     public BarModel m_model;
@@ -18,20 +19,11 @@ public class BarManager : MonoBehaviour,IManager {
         m_inst = this;
     }
 
-    public float m_rightBarInterval;
-    public float m_leftBarInterval;
-    // bar가 어떤 간격으로 나오냐?
-
-    public float m_rightBarPassedTime;
-    public float m_leftBarPassedTime;
+    
    
     public void AwakeMgr()
     {
-        m_rightBarInterval = 1.5f;
-        m_rightBarPassedTime = 0.0f;
-        
-        m_leftBarInterval = 1.5f;
-        m_leftBarPassedTime = 0.0f;
+     
         
         m_model = Utils.MakeObjectWithComponent<BarModel>("BarModel", this.gameObject);
         m_model.Init();
@@ -163,33 +155,60 @@ public class BarManager : MonoBehaviour,IManager {
         }
     }
 
-
     public void StartMgr()
     {
 
     }
     public void UpdateMgr()
     {
-        m_rightBarPassedTime += Time.deltaTime;
-        m_leftBarPassedTime += Time.deltaTime;
+        m_model.m_rightBarPassedTime += Time.deltaTime;
+        m_model.m_leftBarPassedTime += Time.deltaTime;
 
-        if (m_rightBarPassedTime > m_rightBarInterval)
-            RightBarRegen();
+        if (m_model.m_rightBarPassedTime > m_model.m_rightBarInterval)
+                RightBarRegen();
 
-        if (m_leftBarPassedTime > m_leftBarInterval)
-            LeftBarRegen();
+        
+        if (m_model.m_leftBarPassedTime > m_model.m_leftBarInterval)
+                LeftBarRegen();
 
 
+        m_model.m_rightBeatChangeTime += Time.deltaTime;
+        m_model.m_leftBeatChangeTime += Time.deltaTime;
+
+        if( m_model.m_rightBeatChangeTime > m_model.m_rightBeatChangeInterval)
+        {
+            m_model.m_rightBeatChangeTime = 0.0f;
+            m_model.m_rightBeatChangeInterval = UnityEngine.Random.Range(12.0f, 16.0f);
+
+            int randBeat = UnityEngine.Random.Range(0, m_model.m_beatList.Count);
+            m_model.m_rightBeat = m_model.m_beatList[randBeat];
+
+        }
+
+        if ( m_model.m_leftBeatChangeTime > m_model.m_leftBeatChangeInterval)
+        {
+            m_model.m_leftBeatChangeTime = 0.0f;
+            m_model.m_leftBeatChangeInterval = UnityEngine.Random.Range(12.0f, 16.0f);
+
+
+            int randBeat = UnityEngine.Random.Range(0, m_model.m_beatList.Count);
+            m_model.m_leftBeat = m_model.m_beatList[randBeat];
+        }
 
         m_view.UpdateView(m_model);
     }
 
     public void SceneChanged()
     {
+        
+        
+
         m_model.SceneChanged();
         m_view.SceneChanged();
     }
+   
     
+
     Bar CheckValidRightInput()
     {
         for(int i= 0; i < m_view.m_rightBarList.Count;i++)
@@ -215,26 +234,47 @@ public class BarManager : MonoBehaviour,IManager {
 
     void RightBarRegen()
     {
-        m_rightBarPassedTime = 0.0f;
 
+        m_model.m_rightBarPassedTime = 0.0f;
+
+
+        if (!m_model.m_rightBeat[m_model.m_indicator])
+        {
+            return;
+        }
+        
         BarData data = m_model.GetDisabledBarData();
 
         BarType ranType = (BarType)UnityEngine.Random.Range(0, 3);
 
-        data.Activate(ranType,BarDir.Right);
+        data.Activate(ranType, BarDir.Right, m_model.m_rightBaseSpeed);
 
         m_view.ActivateBar(data);
     }
     void LeftBarRegen()
     {
-        m_leftBarPassedTime = 0.0f;
+        m_model.m_leftBarPassedTime = 0.0f;
+
+        int fakeIndicator = m_model.m_indicator;
+
+        m_model.m_indicator++;
+        if (m_model.m_indicator > 11)
+            m_model.m_indicator = 0;
+
+        if (!m_model.m_leftBeat[fakeIndicator])
+        {
+            
+
+            return;
+        }
+
 
         BarData data = m_model.GetDisabledBarData();
 
         BarType ranType = (BarType)UnityEngine.Random.Range(0, 3);
 
 
-        data.Activate(ranType,BarDir.Left);
+        data.Activate(ranType,BarDir.Left,m_model.m_leftBaseSpeed);
 
         m_view.ActivateBar(data);
     }

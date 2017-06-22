@@ -24,13 +24,13 @@ public class TurnManager : MonoBehaviour,IManager {
 
         FOWManager.GetInst.NextTurn();
 
-
         MonsterManager.GetInst.NextTurn();
     }
     public void AwakeMgr()
     {
         m_model = Utils.MakeObjectWithComponent<TurnModel>("TurnModel", this.gameObject);
         m_model.Init();
+
 
 
         m_view = Utils.MakeObjectWithComponent<TurnView>("TurnView", this.gameObject);

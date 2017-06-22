@@ -164,22 +164,11 @@ public class RandomMapGenerateData
     }
 }
 [System.Serializable]
-public struct Coord2DSt
-{
-    public int m_x;
-    public int m_y;
 
-    public Coord2DSt(int _x, int _y)
-    {
-        m_x = _x;
-        m_y = _y;
-    }
-}
 
 
 public class MapModel : MonoBehaviour {
-
-    public List<Sprite> m_tileSpriteList;
+    
 
     public TileData[][] m_tileDataAry;
 
@@ -204,10 +193,7 @@ public class MapModel : MonoBehaviour {
 
     public void Init()
     {
-
-        LoadSprite();
         InitVariables();
-
 
         RegenMap();
     }
@@ -222,7 +208,8 @@ public class MapModel : MonoBehaviour {
     }
     public Sprite GetTileSprite(TileSpriteType _type)
     {
-        return m_tileSpriteList[(int)_type];
+        Sprite sp = ResourceManager.GetInst.GetSprite(ResourceType.Tile, (int)_type);
+        return sp;
     }
 
     public void RegenMap()
@@ -863,18 +850,7 @@ public class MapModel : MonoBehaviour {
         }
     }
 
-    void LoadSprite()
-    {
-        m_tileSpriteList = new List<Sprite>();
-
-        int numOfSprite = System.Enum.GetNames(typeof(TileSpriteType)).Length;
-        
-        for(int i = 0; i < numOfSprite;i++)
-        {
-            Sprite sp = Resources.Load<Sprite>("PlayScene/Images/Tiles/" + ((TileSpriteType)i).ToString());
-            m_tileSpriteList.Add(sp);
-        }        
-    }
+  
     bool IsValidIndex(int _xIndex, int _yIndex)
     {
         if (_xIndex < 0 || _xIndex >= m_mapWidth || _yIndex < 0 || _yIndex >= m_mapHeight)

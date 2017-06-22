@@ -22,8 +22,8 @@ public class BarPanel : MonoBehaviour
     public GameObject m_alarmPoint;
 
    
-    public float m_rightBarSpeed;
-    public float m_leftBarSpeed;
+    public float m_deltaRightBarSpeed;
+    public float m_deltaLeftBarSpeed;
 
     public float m_rightRegenTime;
     public float m_leftRegenTime;
@@ -53,10 +53,10 @@ public class BarPanel : MonoBehaviour
     //    m_leftBarList = new List<Bar>();
     //    m_alarmList = new List<Alarm>();
 
-    //    m_rightBarSpeed = 750.0f;
+    //    m_deltaRightBarSpeed = 750.0f;
     //    m_rightRegenTime = 1f;
 
-    //    m_leftBarSpeed = 750.0f;
+    //    m_deltaLeftBarSpeed = 750.0f;
     //    m_leftRegenTime = 1.0f;
 
     //    m_rightPassedTime = 0.0f;
@@ -123,7 +123,7 @@ public class BarPanel : MonoBehaviour
 
     //        if (m_rightBarList[i].m_isActive)
     //        {
-    //            bar.m_rect.localPosition += new Vector3(-m_rightBarSpeed * Time.deltaTime, 0, 0);
+    //            bar.m_rect.localPosition += new Vector3(-m_deltaRightBarSpeed * Time.deltaTime, 0, 0);
 
     //            if (bar.m_rect.localPosition.x < -5.0f)
     //                bar.Disable();
@@ -138,7 +138,7 @@ public class BarPanel : MonoBehaviour
 
     //        if (m_leftBarList[i].m_isActive)
     //        {
-    //            bar.m_rect.localPosition += new Vector3(m_leftBarSpeed * Time.deltaTime, 0, 0);
+    //            bar.m_rect.localPosition += new Vector3(m_deltaLeftBarSpeed * Time.deltaTime, 0, 0);
 
     //            if (bar.m_rect.localPosition.x > 5.0f)
     //                bar.Disable();

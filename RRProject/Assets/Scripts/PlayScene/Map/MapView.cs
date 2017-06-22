@@ -71,8 +71,7 @@ public class MapView : MonoBehaviour
     {
         //클리어
         Color clearCol = new Color(1.0f, 1.0f, 1.0f, 1.0f);
-        Color edgeColor = new Color(0.0f, 0.0f, 0.0f, 1.0f);
-
+        
 
         for(int y = 0; y < MapManager.GetInst.m_model.m_mapHeight; y++  )
         {
@@ -100,19 +99,7 @@ public class MapView : MonoBehaviour
 
                 m_tileAry[x][y].m_ren.color = color;
             }           
-        }
-
-
-        for(int i = 0; i < MapManager.GetInst.m_model.m_passageList.Count;i++)
-        {
-            Passage passage = MapManager.GetInst.m_model.m_passageList[i];
-
-            //m_tileAry[passage.m_startX][passage.m_startY].m_ren.color = edgeColor;
-            //m_tileAry[passage.m_endX][passage.m_endY].m_ren.color = edgeColor;
-
-            Debug.DrawLine(m_tileAry[passage.m_startX][passage.m_startY].transform.position,
-                m_tileAry[passage.m_endX][passage.m_endY].transform.position, Color.red, 6.0f, false);
-        }
+        }       
     }
    
 }

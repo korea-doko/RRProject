@@ -23,17 +23,17 @@ public class BarData
     {
         m_id = _id;
         m_isActive = false;
-        m_speed = 300.0f;
+        m_speed = 0.0f;
         m_type = BarType.Normal;
         m_skillPropertyName = SkillPropertyName.None;
     }
 
-    public void Activate(BarType _barType,BarDir _dir)
+    public void Activate(BarType _barType,BarDir _dir,float _speed)
     {
         m_isActive = true;
         m_dir = _dir;
         m_type = _barType;
-
+        m_speed = _speed;
         if( m_type == BarType.Touchable)
         {
             m_skillPropertyName = SkillPropertyName.None;
@@ -52,7 +52,7 @@ public class BarData
     public void Clear()
     {
         m_isActive = false;
-        m_speed = 300.0f;
+        m_speed = 0.0f;
         m_type = BarType.Normal;
         m_skillPropertyName = SkillPropertyName.None;
     }

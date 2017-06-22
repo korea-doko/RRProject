@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 public enum BarType
 {
     Normal,                 // 안쳐도 손해 x, 그러나 콤보 끊김
@@ -18,36 +19,91 @@ public enum BarSpriteName
     Yellow,
     White
 }
+
 public class BarModel : MonoBehaviour
 {
+    public List<bool[]> m_beatList;
 
+    public bool[] m_leftBeat;
+    public bool[] m_rightBeat;
 
+    public int m_indicator;
+    
     public List<BarData> m_barDataList;
-
-
     public SensorData[] m_sensorDataAry;
-    public List<Sprite> m_barSpriteList;
+
+    public float m_leftBaseSpeed;
+    public float m_rightBaseSpeed;
+
+    public float m_rightBarInterval;
+    public float m_leftBarInterval;
+    // bar가 어떤 간격으로 나오냐?
+
+    public float m_rightBarPassedTime;
+    public float m_leftBarPassedTime;
+    // 지나간 시간
+
+    public float m_rightBeatChangeInterval;
+    public float m_leftBeatChangeInterval;
+
+    public float m_rightBeatChangeTime;
+    public float m_leftBeatChangeTime;
+
+    public float m_BPM;
+    
     int m_numOfBarData;
 
     public void Init()
     {
-        m_numOfBarData = 20;
-        InitSpriteList();
+
+
+        m_beatList = new List<bool[]>();
+
+        for(int i = 0; i < 100;i++)
+        {
+            bool[] newBeat = new bool[12];
+
+            for(int x = 0; x < 12;x++)
+            {
+                bool beat = UnityEngine.Random.Range(0, 2) == 0 ? true : false;
+                newBeat[x] = beat;
+            }
+
+            m_beatList.Add(newBeat);
+        }
+
+        m_rightBeat = m_beatList[0];
+        m_leftBeat = m_beatList[1];
+
+        m_indicator = 0;
+
+        m_rightBeatChangeInterval = UnityEngine.Random.Range(12.0f, 16.0f);
+        m_leftBeatChangeInterval = UnityEngine.Random.Range(12.0f, 16.0f);
+
+        m_leftBeatChangeTime = 0.0f;
+        m_rightBeatChangeTime = 0.0f;
+
+        InitVariables();
+        
         InitBarDataList();
         InitSensorData();
     }
-    void InitSpriteList()
+    void InitVariables()
     {
-        m_barSpriteList = new List<Sprite>();
+        m_BPM = 140.0f;
 
-        int numOfSpriteType = System.Enum.GetNames(typeof(BarSpriteName)).Length;
+        m_numOfBarData = 20;
+        m_leftBaseSpeed = 500.0f;
+        m_rightBaseSpeed = 500.0f;
 
-        for (int i = 0; i < numOfSpriteType;i++)
-        {
-            Sprite sp = Resources.Load<Sprite>("BattleScene/Images/" + ((BarSpriteName)i).ToString()+"Bar");
-            m_barSpriteList.Add(sp);
-        }        
+        m_rightBarInterval = 60.0f / m_BPM;
+        m_rightBarPassedTime = 0.0f;
+
+        m_leftBarInterval = 60.0f / m_BPM;
+        m_leftBarPassedTime = 0.0f;
+
     }
+   
     void InitBarDataList()
     {
         m_barDataList = new List<BarData>();
@@ -84,17 +140,41 @@ public class BarModel : MonoBehaviour
     {
         return m_sensorDataAry[(int)_dir];
     }
+
+
     public Sprite GetBarSprite(BarSpriteName _barName)
     {
-        return m_barSpriteList[(int)_barName];
+        Sprite sp = ResourceManager.GetInst.GetSprite
+            (ResourceType.Bar,(int)_barName);
+
+        return sp;
     }
 
     public void SceneChanged()
     {
-        for(int i = 0; i < m_barDataList.Count;i++)
+        InitVariables();
+
+        for (int i = 0; i < BMonsterManager.GetInst.m_model.m_monsterDataList.Count; i++)
+        {
+            MonsterData monData = BMonsterManager.GetInst.m_model.m_monsterDataList[i];
+
+            for (int t = 0; t < monData.GetTitleList.Count; t++)
+            {
+                TitleData titleData = monData.GetTitleList[t];
+               
+                //m_rightBaseSpeed =
+                //    m_rightBaseSpeed * (100.0f + titleData.m_deltaRightBarSpeed) * 0.01f;
+
+                //m_leftBaseSpeed =
+                //    m_leftBaseSpeed * (100.0f + titleData.m_deltaLeftBarSpeed) * 0.01f;
+            }
+        }
+
+        for (int i = 0; i < m_barDataList.Count;i++)
         {
             BarData d = m_barDataList[i];
             d.Clear();
         }
     }
+
 }

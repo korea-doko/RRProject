@@ -21,6 +21,9 @@ public class PlayerData
     int m_prevXindex;
     [SerializeField]
     int m_prevYIndex;
+    [SerializeField]
+    int m_curHP;
+
 
 
     public PlayerData(int _xIndex, int _yIndex)
@@ -34,8 +37,14 @@ public class PlayerData
         m_prevXindex = -1;
         m_prevYIndex = -1;
 
-        m_hp = 10;
-        m_sight = 3;
+        m_hp = 100;
+        m_curHP = m_hp;
+        m_sight = 10;
+    }
+    public int CurHP
+    {
+        get { return m_curHP; }
+        set { m_curHP = value; }
     }
     public int HP
     {

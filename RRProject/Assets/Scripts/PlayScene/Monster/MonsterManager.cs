@@ -25,6 +25,9 @@ public class MonsterManager : MonoBehaviour,IManager {
         {
             MonsterData data = m_model.m_monsterDataList[i];
 
+            if (data.IsDead)
+                continue;
+
             int randomAxis = UnityEngine.Random.Range(0, 2);
             
             if( randomAxis == 0)
@@ -46,6 +49,8 @@ public class MonsterManager : MonoBehaviour,IManager {
         }
 
         m_view.MonsterMove(m_model);
+
+        m_view.ChangeMonsterState(m_model);
     }
 
     public bool CheckMonsterExists(TileData _data)
@@ -53,6 +58,10 @@ public class MonsterManager : MonoBehaviour,IManager {
         for(int i = 0; i < m_model.m_monsterDataList.Count;i++)
         {
             MonsterData data = m_model.m_monsterDataList[i];
+
+            if (data.IsDead)
+                continue;
+
             if (data.ParentTileData.m_xIndex == _data.m_xIndex &&
                 data.ParentTileData.m_yIndex == _data.m_yIndex)
             {                
@@ -118,15 +127,16 @@ public class MonsterManager : MonoBehaviour,IManager {
     {
         if (DataPassManager.GetInst.m_battleToPlayST.m_bMonsterDataAry == null)
             return;
-
-        BMonsterData[] bMonAry = DataPassManager.GetInst.m_battleToPlayST.m_bMonsterDataAry;
+        
+        MonsterData[] bMonAry = DataPassManager.GetInst.m_battleToPlayST.m_bMonsterDataAry;
 
         for(int i = 0; i < bMonAry.Length;i++)
         {
-            BMonsterData bData = bMonAry[i];
-
-            MonsterData data = GetMonsterData(bData.m_id);
-            data.ChangeMonsterData(bData);            
+            MonsterData data = bMonAry[i];
+            
+            data.ChangeMonsterData(data);            
         }
+
+        m_view.ChangeMonsterState(m_model);
     }
 }

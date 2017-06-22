@@ -65,6 +65,10 @@ public class BInputManager : MonoBehaviour ,IManager
     {
         m_model.ComboSuccess();
         m_view.GetCombo(m_model);
+
+        if (m_model.m_curComboCount % 10 == 0)
+            BPlayerManager.GetInst.GetHealed(10);
+
     }
     public void ComboFail()
     {

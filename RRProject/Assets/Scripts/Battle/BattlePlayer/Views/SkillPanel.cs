@@ -28,7 +28,7 @@ public class SkillPanel : MonoBehaviour
     {
         Text t = m_skillTextList[m_numOfSkill++];
 
-        string str = _data.m_name + " : ";
+        string str = _data.Name + " : ";
         for (int i = 0; i < _data.m_commandList.Count; i++)
             str += _data.m_commandList[i].m_code.ToString() + "(" + _data.m_commandList[i].m_property.ToString() + ") ";
 

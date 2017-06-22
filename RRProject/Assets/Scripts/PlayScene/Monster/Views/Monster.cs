@@ -6,10 +6,13 @@ public class Monster : MonoBehaviour {
 
     public int m_id;
     public Tile m_parentTile;
+    public SpriteRenderer m_ren;
+    public bool m_isActive;
 
 
     public void Init(MonsterData _data)
     {
+        m_ren = this.GetComponent<SpriteRenderer>();
         m_id = _data.ID;
         SetParentTile(_data.ParentTileData);
     }
@@ -21,10 +24,12 @@ public class Monster : MonoBehaviour {
     }
     public void Disable()
     {
-        this.gameObject.SetActive(false);
+        m_isActive = false;
+        this.gameObject.SetActive(m_isActive);
     }
     public void Enable()
     {
-        this.gameObject.SetActive(true);
+        m_isActive = true;
+        this.gameObject.SetActive(m_isActive);
     }
 }

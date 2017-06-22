@@ -4,22 +4,24 @@ using UnityEngine;
 
 public class BPlayerModel : MonoBehaviour
 {
-    public BPlayerData m_playerData;
+    public PlayerData m_playerData;
+    public List<BSkillData> m_bSkillDataList;
+
     public bool m_isModelChanged;
     
     public void Init()
     {
-        m_playerData = new BPlayerData();
         m_isModelChanged = true;
+        m_bSkillDataList = new List<BSkillData>();
     }
 
     public void AddBSkillToBPlayerData(BSkillData _data)
     {
-        m_playerData.m_bSkillDataList.Add(_data);
+        m_bSkillDataList.Add(_data);
     }
     
     public void Clear()
     {
-        m_playerData.m_bSkillDataList.Clear();
+        m_bSkillDataList.Clear();
     }
 }
